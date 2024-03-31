@@ -37,7 +37,7 @@ public class EventUnit : MonoBehaviour
 
     
     /// <summary>
-    /// 允许修改当前事件，支持和组件交互
+    /// 允许修改当前事件，支持和组件交互，如果是对话框的话选择编辑之后将可见
     /// </summary>
     public void editEvent()
     {
@@ -54,7 +54,7 @@ public class EventUnit : MonoBehaviour
         {
             foreach (GameObject element in objectList)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(true);
+                element.SetActive(true);
             }
         }
         else
@@ -64,7 +64,7 @@ public class EventUnit : MonoBehaviour
     }
 
     /// <summary>
-    /// 保存当前时间，禁止修改
+    /// 保存当前事件，禁止修改,如果是对话框的话保存之后将不可见
     /// </summary>
     public void saveEvent()
     {
@@ -80,7 +80,7 @@ public class EventUnit : MonoBehaviour
         {
             foreach (GameObject element in objectList)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                element.SetActive(false);
             }
         }
         else
@@ -90,22 +90,27 @@ public class EventUnit : MonoBehaviour
     }
 
     /// <summary>
-    /// 运行时相关操作
+    /// 运行时的操作
     /// </summary>
     public void play()
     {
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-
+            return;
         }
         else if (m_ObjectType == 1)
         {
-
+            foreach (GameObject element in objectList)
+            {
+                element.SetActive(true);
+                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                element.transform.Find("Content Affordance").gameObject.SendMessage("play");
+            }
         }
         else
         {
-
+            //TODO 交互相关操作
         }
     }
 

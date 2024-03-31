@@ -70,7 +70,17 @@ public class EventLink : MonoBehaviour
         --m_EventCount;
     }
 
-
+    /// <summary>
+    /// 依次运行每个事件
+    /// </summary>
+    void play()
+    {
+        foreach (EventUnit eventUnit in m_Link)
+        {
+            eventUnit.play();
+        }
+    }
+    
 
     // Start is called before the first frame update
     void Start()
