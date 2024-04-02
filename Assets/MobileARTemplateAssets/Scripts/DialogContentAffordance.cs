@@ -124,10 +124,31 @@ public class DialogContentAffordance : MonoBehaviour
         
     }
 
+    private float delayTime = 2;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void play()
+    {
+        foreach (string content in m_DialogContent)
+        {
+            updateDialogContent(content);
+            System.Threading.Thread.Sleep(2000);
+        }
+    }
+
+    /// <summary>
+    /// 把当前文本框的内容更新成content
+    /// </summary>
+    /// <param name="content"></param>
+
     public void updateDialogContent(string content)
     {
         m_TextSource.text = content;
     }
+
+    
 
     // Start is called before the first frame update
     void Start()
