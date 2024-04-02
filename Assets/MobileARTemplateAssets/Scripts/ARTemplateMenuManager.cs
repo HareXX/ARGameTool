@@ -42,6 +42,17 @@ public class ARTemplateMenuManager : MonoBehaviour
     }
 
     [SerializeField]
+    [Tooltip("Button that edits a selected menu.")]
+    Button m_EditButton;
+    public Button editButton
+    {
+        get => m_EditButton;
+        set => m_EditButton = value;
+    }
+
+
+
+    [SerializeField]
     [Tooltip("The menu with all the creatable objects.")]
     GameObject m_ObjectMenu;
 
@@ -276,6 +287,17 @@ public class ARTemplateMenuManager : MonoBehaviour
             m_IsPointerOverUI = false;
             m_CreateButton.gameObject.SetActive(true);
             m_DeleteButton.gameObject.SetActive(m_InteractionGroup?.focusInteractable != null);
+            if (m_InteractionGroup.focusInteractable != null)
+            {
+                if(m_InteractionGroup.focusInteractable.transform.tag == "Dialog")
+                {
+                    m_EditButton.gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                m_EditButton.gameObject.SetActive(false);
+            }
         }
 
         if (!m_IsPointerOverUI && m_ShowOptionsModal)

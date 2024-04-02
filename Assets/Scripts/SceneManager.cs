@@ -6,7 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit.Transformers;
 
 public class SceneManager : MonoBehaviour
 {
-    private static SceneManager instance;
+    public int currentScene;
+    public static SceneManager instance;
     public ObjectSpawner ObjectSpawner;
     public Transform Trackables;
     public GameObject XROrigin;
@@ -16,6 +17,10 @@ public class SceneManager : MonoBehaviour
         instance = this;
     }
 
+    private void OnEnable()
+    {
+        currentScene = 0;
+    }
     public void RemoveGameObjects()
     {
         List<GameObject> ARGameObjectPackage = new List<GameObject>();
@@ -28,7 +33,14 @@ public class SceneManager : MonoBehaviour
             }
             ObjectSpawner.transform.GetChild(i).gameObject.SetActive(false);
         }
-        ARGameObjectPackages.Add(ARGameObjectPackage);
+        if (currentScene == 0)
+        {
+            ARGameObjectPackages.Add(ARGameObjectPackage);
+        }
+        else
+        {
+            ARGameObjectPackages[currentScene-1] = ARGameObjectPackage;
+        }
 
         int j = 1;
         foreach (var item in ARGameObjectPackages)
