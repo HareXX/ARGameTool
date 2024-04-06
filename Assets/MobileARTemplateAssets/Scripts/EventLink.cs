@@ -17,20 +17,9 @@ public class EventLink : MonoBehaviour
     }
 
     /// <summary>
-    /// 当前所在事件
-    /// </summary>
-    int m_CurrentEventIndex = -1;
-
-    public int currentEventIndex
-    {
-        get => m_CurrentEventIndex;
-        set => m_CurrentEventIndex = value;
-    }
-
-    /// <summary>
     /// 事件数量
     /// </summary>
-    int m_EventCount = -1;
+    int m_EventCount = -1; // 0...n-1
 
     public int eventCount
     {
@@ -42,9 +31,10 @@ public class EventLink : MonoBehaviour
     /// <summary>
     ///在事件链最后添加一个事件
     /// </summary>
-    void addEvent()
+    public void addEvent(int type)
     {
         EventUnit newEvent = new EventUnit();
+        newEvent.setType(type);
         m_Link.Add(newEvent);
         ++m_EventCount;
     }
@@ -54,26 +44,25 @@ public class EventLink : MonoBehaviour
     /// 编辑选中的事件
     /// </summary>
     /// <param name="eventIndex">事件序号[0..n]</param>
-    void editEvent(int eventIndex)
+    public void editEvent(int eventIndex)
     {
-        m_CurrentEventIndex = eventIndex;
         m_Link[eventIndex].editEvent();
     }
 
     /// <summary>
     /// 删除选中的事件
     /// </summary>
-    void deleteEvent()
+    public void deleteEvent(int eventIndex)
     {
-        m_Link.RemoveAt(m_CurrentEventIndex);
-        m_CurrentEventIndex = -1;
+        
+        m_Link.RemoveAt(eventIndex);
         --m_EventCount;
     }
 
     /// <summary>
     /// 依次运行每个事件
     /// </summary>
-    void play()
+    public void play()
     {
         foreach (EventUnit eventUnit in m_Link)
         {

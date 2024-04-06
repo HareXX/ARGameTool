@@ -44,7 +44,7 @@ public class EventUnit : MonoBehaviour
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-            //把每个物体设置成不可交互
+            //把每个物体设置成可交互
             foreach (GameObject element in objectList)
             {
                 element.transform.Find("Interaction Affordance").gameObject.SetActive(true);
