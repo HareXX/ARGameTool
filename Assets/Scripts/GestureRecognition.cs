@@ -20,6 +20,8 @@ public class GestureRecognition : MonoBehaviour
     TextMeshProUGUI resultText;
     Button uploadButton;
 
+    public Image Image;
+
     void Start()
     {
         GameObject.Find("Result").SetActive(true);
@@ -146,6 +148,13 @@ public class GestureRecognition : MonoBehaviour
             ScreenCapture.CaptureScreenshot(screenshotPath);
             // 等待1帧确保截图完成
             yield return null;
+
+            byte[] fileData = System.IO.File.ReadAllBytes(screenshotPath);
+            Texture2D texture = new Texture2D(2, 2);
+            texture.LoadImage(fileData); // 加载图片数据
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
+            Image.GetComponent<Image>().sprite = sprite;
+
             // 读取截图并转换为Base64编码
             string base64Image = GetImageBase64FromFile(screenshotPath);
             // 如果成功获取到Base64编码，则识别手势
