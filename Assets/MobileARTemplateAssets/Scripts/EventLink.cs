@@ -27,7 +27,6 @@ public class EventLink : MonoBehaviour
         set => m_EventCount = value;
     }
 
-
     /// <summary>
     ///在事件链最后添加一个事件
     /// </summary>
@@ -57,6 +56,12 @@ public class EventLink : MonoBehaviour
         
         m_Link.RemoveAt(eventIndex);
         --m_EventCount;
+    }
+
+    public void saveEvent(int eventIndex, List<GameObject> objects)
+    {
+        Debug.Log("进入EventLink");
+        m_Link[eventIndex].saveEvent(objects);
     }
 
     /// <summary>

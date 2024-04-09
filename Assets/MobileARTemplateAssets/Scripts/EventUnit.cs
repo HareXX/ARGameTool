@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EventUnit : MonoBehaviour
 {
-    int m_ObjectType = -1;
+    public int m_ObjectType = -1;
 
     /// <summary>
     /// 元素类型
@@ -18,6 +18,8 @@ public class EventUnit : MonoBehaviour
         get => m_ObjectType;
         set => m_ObjectType = value;
     }
+
+    public int animationType;
 
     /// <summary>
     /// 当前事件的所有元素
@@ -47,7 +49,7 @@ public class EventUnit : MonoBehaviour
             //把每个物体设置成可交互
             foreach (GameObject element in objectList)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(true);
+                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = true;
             }
         }
         else if (m_ObjectType == 1)
@@ -57,24 +59,37 @@ public class EventUnit : MonoBehaviour
                 element.SetActive(true);
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 添加交互
+        }
+        else
+        {
+            
+            //TODO
         }
     }
 
     /// <summary>
     /// 保存当前事件，禁止修改,如果是对话框的话保存之后将不可见
     /// </summary>
-    public void saveEvent()
+    public void saveEvent(List<GameObject> objects)
     {
+        Debug.Log("进入EventUnit");
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-            foreach (GameObject element in objectList)
+            foreach(GameObject gameObject in objects)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                objectList.Add(gameObject);
+                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = false;
+                //gameObject.transform.Find("Interaction Affordance").gameObject.SetActive(false);
             }
+
+            //foreach (GameObject element in objectList)
+            //{
+            //    element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+            //}
         }
         else if (m_ObjectType == 1)
         {
@@ -83,9 +98,15 @@ public class EventUnit : MonoBehaviour
                 element.SetActive(false);
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 禁止交互相关功能
+        }
+        else
+        {
+            objectList.Add(AnimationManager.instance.targetObject);
+            animationType = AnimationManager.instance.animationTyoe;
+            //动画
         }
     }
 
@@ -104,14 +125,24 @@ public class EventUnit : MonoBehaviour
             foreach (GameObject element in objectList)
             {
                 element.SetActive(true);
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = false;
                 element.transform.Find("Content Affordance").gameObject.SendMessage("play");
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 交互相关操作
         }
+        else if (m_ObjectType == 3)
+        {
+            AnimationManager.instance.playAnimation(objectList[0], animationType);
+            //TODO 动画
+        }
+    }
+
+    public void addObject(GameObject newObject)
+    {
+        objectList.Add(newObject);
     }
 
     // Start is called before the first frame update

@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+using UnityEngine.XR.Interaction.Toolkit.Transformers;
 using TMPro;
 
 public class EventLinkContentManager : MonoBehaviour
 {
+
     public GameObject content;
 
+    public ObjectSpawner ObjectSpawner;
 
-    public EventLink eventLink;
+    public EventLink eventLink = new EventLink();
 
     //具体事件按钮的List
     public List<GameObject> eventButtonList = new List<GameObject>();
@@ -34,6 +38,13 @@ public class EventLinkContentManager : MonoBehaviour
     //TODO 保存按钮
     public GameObject saveButton;
 
+    //
+    public GameObject animationManager;
+
+    //UI
+    public GameObject UI;
+
+
     // 事件个数(1...n)，不是事件index
     public int eventCount;
 
@@ -42,7 +53,7 @@ public class EventLinkContentManager : MonoBehaviour
 
     public void Start()
     {
-        eventLink = new EventLink();
+        if (eventLink == null) eventLink = new EventLink();
         eventCount = 0;
     }
 
@@ -97,6 +108,10 @@ public class EventLinkContentManager : MonoBehaviour
         else hideButtons();
     }
 
+    public void addObject(GameObject newObject)
+    {
+        eventLink.link[focusedEventIndex].addObject(newObject);
+    }
 
     /// <summary>
     /// 新建事件
@@ -104,6 +119,7 @@ public class EventLinkContentManager : MonoBehaviour
     /// <param name="type">
     ///     0: 点击添加物体按钮
     ///     1: 点击添加交互按钮
+    ///     2: 点击添加动画按钮
     /// </param>
     public void newEvent(int type)
     {
@@ -121,12 +137,19 @@ public class EventLinkContentManager : MonoBehaviour
             eventLink.addEvent(0);  // type 0 是物体
             //TODO 这里未将对话框和物体区分，统一是0
         }
-        else
+        else if (type == 1)
         {
             TextMeshProUGUI text = newEvent.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();   //设置按钮内容
             text.SetText("Interaction");
 
             eventLink.addEvent(2);  // type 2 是交互
+        }
+        else if (type == 2)
+        {
+            TextMeshProUGUI text = newEvent.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();   //设置按钮内容
+            text.SetText("Animation");
+
+            eventLink.addEvent(3);  // type 3 是动画
         }
         newEvent.SetActive(true);
         addButton.transform.Find("SelectionBox").gameObject.SetActive(false);
@@ -153,10 +176,74 @@ public class EventLinkContentManager : MonoBehaviour
 
     /// <summary>
     /// 点击编辑按钮对事件编辑
-    /// TODO 需要在eventLink中获取当前eventUnit的type，进行对应UI的展示，type = 0/1 需要展示添加物体的UI，type = 2 需要展示添加交互的UI
+    /// TODO 需要在eventLink中获取当前eventUnit的type，进行对应UI的展示，type = 0/1 需要展示添加物体的UI，type = 2 需要展示添加交互的UI, type = 3展示动画的UI
     /// </summary>
     public void editEvent()
     {
+        int eventType = eventLink.link[focusedEventIndex].objectType;
+        if (eventType == 0)
+        {
+            ObjectSpawner.stopSpawn = false;
+            UI.GetComponent<GoalManager>().StartCoaching();
+            UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
+        }
+        else if (eventType == 1)
+        {
 
+        }
+        else if (eventType == 2)
+        {
+
+        }
+        else if (eventType == 3)
+        {
+            animationManager.SetActive(true);
+            animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(true);
+            animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// 保存当前事件
+    /// </summary>
+    public void saveEvent()
+    {
+        int eventType = eventLink.link[focusedEventIndex].objectType;
+        if (eventType == 0)
+        {
+            List<GameObject> objects = new List<GameObject>();
+            if (ObjectSpawner.ObjectCnt != 0)
+            {
+                int childCount = ObjectSpawner.transform.childCount;
+                for (int i = ObjectSpawner.ObjectCnt; i > 0; --i)
+                {
+                    objects.Add(ObjectSpawner.transform.GetChild(childCount - i).gameObject);
+                }
+            }
+            Debug.Log("开始保存");
+            Debug.Log(objects);
+            eventLink.saveEvent(focusedEventIndex, objects);
+
+            ObjectSpawner.stopSpawn = true;
+        }
+        else if (eventType == 1)
+        {
+
+        }
+        else if (eventType == 2)
+        {
+
+        }
+        else if (eventType == 3)
+        {
+            eventLink.saveEvent(focusedEventIndex, null);
+            animationManager.SetActive(false);
+            animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
+            animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(false);
+            Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
+            Debug.Log("Dammmmmmmmmmmmmmn");
+            Debug.Log(eventLink.link[focusedEventIndex].animationType);
+            AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], 0);
+        }
     }
 }

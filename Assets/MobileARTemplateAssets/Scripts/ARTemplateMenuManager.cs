@@ -212,6 +212,9 @@ public class ARTemplateMenuManager : MonoBehaviour
     bool m_ShowObjectMenu;
     bool m_ShowOptionsModal;
     bool m_InitializingDebugMenu;
+
+    public bool choosingObject;
+
     Vector2 m_ObjectButtonOffset = Vector2.zero;
     Vector2 m_ObjectMenuOffset = Vector2.zero;
     readonly List<ARFeatheredPlaneMeshVisualizerCompanion> featheredPlaneMeshVisualizerCompanions = new List<ARFeatheredPlaneMeshVisualizerCompanion>();
@@ -258,6 +261,11 @@ public class ARTemplateMenuManager : MonoBehaviour
         m_PlaneManager.planePrefab = m_DebugPlane;
     }
 
+    public void chooseObject(bool state)
+    {
+        choosingObject = state;
+    }
+
     /// <summary>
     /// See <see cref="MonoBehaviour"/>.
     /// </summary>
@@ -282,6 +290,12 @@ public class ARTemplateMenuManager : MonoBehaviour
 
             m_IsPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(-1);
         }
+        else if (choosingObject)
+        {
+            m_IsPointerOverUI = false;
+            m_CreateButton.gameObject.SetActive(false);
+            m_DeleteButton.gameObject.SetActive(false);
+        }
         else
         {
             m_IsPointerOverUI = false;
@@ -296,7 +310,8 @@ public class ARTemplateMenuManager : MonoBehaviour
             }
             else
             {
-                m_EditButton.gameObject.SetActive(false);
+                if (m_EditButton != null)
+                    m_EditButton.gameObject.SetActive(false);
             }
         }
 
