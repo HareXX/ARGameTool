@@ -44,6 +44,7 @@ public class EventLinkContentManager : MonoBehaviour
     //UI
     public GameObject UI;
 
+    public List<GameObject> objectToAdded;
 
     // 事件个数(1...n)，不是事件index
     public int eventCount;
@@ -174,6 +175,7 @@ public class EventLinkContentManager : MonoBehaviour
         focusedEventIndex = -1;
     }
 
+
     /// <summary>
     /// 点击编辑按钮对事件编辑
     /// TODO 需要在eventLink中获取当前eventUnit的type，进行对应UI的展示，type = 0/1 需要展示添加物体的UI，type = 2 需要展示添加交互的UI, type = 3展示动画的UI
@@ -186,14 +188,15 @@ public class EventLinkContentManager : MonoBehaviour
             ObjectSpawner.stopSpawn = false;
             UI.GetComponent<GoalManager>().StartCoaching();
             UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
+            eventLink.editEvent(focusedEventIndex);
         }
         else if (eventType == 1)
         {
-
+            // TODO 展示对话框相关UI
         }
         else if (eventType == 2)
         {
-
+            // TODO 展示交互相关UI
         }
         else if (eventType == 3)
         {
@@ -203,6 +206,8 @@ public class EventLinkContentManager : MonoBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 保存当前事件
     /// </summary>
@@ -211,28 +216,23 @@ public class EventLinkContentManager : MonoBehaviour
         int eventType = eventLink.link[focusedEventIndex].objectType;
         if (eventType == 0)
         {
-            List<GameObject> objects = new List<GameObject>();
-            if (ObjectSpawner.ObjectCnt != 0)
-            {
-                int childCount = ObjectSpawner.transform.childCount;
-                for (int i = ObjectSpawner.ObjectCnt; i > 0; --i)
-                {
-                    objects.Add(ObjectSpawner.transform.GetChild(childCount - i).gameObject);
-                }
-            }
-            Debug.Log("开始保存");
-            Debug.Log(objects);
-            eventLink.saveEvent(focusedEventIndex, objects);
+            foreach (GameObject gameObject in ObjectSpawner.objectToAdded) objectToAdded.Add(gameObject);
+            //objectToAdded = ObjectSpawner.objectToAdded;
+            ObjectSpawner.objectToAdded.Clear();
 
+            Debug.Log("开始保存");
+            Debug.Log(objectToAdded);
+            eventLink.saveEvent(focusedEventIndex, objectToAdded);
+            UI.transform.Find("Create Button").gameObject.SetActive(false) ;
             ObjectSpawner.stopSpawn = true;
         }
         else if (eventType == 1)
         {
-
+            //TODO 隐藏对话框相关UI
         }
         else if (eventType == 2)
         {
-
+            //TODO 隐藏隐藏交互相关UI
         }
         else if (eventType == 3)
         {
@@ -243,7 +243,7 @@ public class EventLinkContentManager : MonoBehaviour
             Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
             Debug.Log("Dammmmmmmmmmmmmmn");
             Debug.Log(eventLink.link[focusedEventIndex].animationType);
-            AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], 0);
+            AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], eventLink.link[focusedEventIndex].animationType);
         }
     }
 }

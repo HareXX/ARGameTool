@@ -9,9 +9,13 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
     public class ObjectSpawner : MonoBehaviour
     {
 
+        public List<GameObject> objectToAdded = new List<GameObject>();
+
         public int ObjectCnt = 0;
 
         public bool stopSpawn = true;
+
+        public GameObject content;
 
         [SerializeField]
         [Tooltip("The camera that objects will face when spawned. If not set, defaults to the main camera.")]
@@ -238,7 +242,8 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             objectSpawned?.Invoke(newObject);
 
             //TODO在当前事件链中当前事件下添加这个物体
-
+            //content.GetComponent<EventLinkContentManager>();
+            objectToAdded.Add(newObject);
             ++ObjectCnt;
 
             return true;

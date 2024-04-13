@@ -37,7 +37,25 @@ public class EventUnit : MonoBehaviour
         m_ObjectType = type;
     }
 
-    
+
+    public void enableIntereaction(GameObject gameObject)
+    {
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = true;
+        }
+    }
+
+    public void disableIntereaction(GameObject gameObject)
+    {
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = false;
+        }
+    }
+
     /// <summary>
     /// 允许修改当前事件，支持和组件交互，如果是对话框的话选择编辑之后将可见
     /// </summary>
@@ -49,7 +67,8 @@ public class EventUnit : MonoBehaviour
             //把每个物体设置成可交互
             foreach (GameObject element in objectList)
             {
-                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = true;
+                Debug.Log("Oooooooooaoooo");
+                enableIntereaction(element);
             }
         }
         else if (m_ObjectType == 1)
@@ -63,10 +82,9 @@ public class EventUnit : MonoBehaviour
         {
             //TODO 添加交互
         }
-        else
+        else if (m_ObjectType == 2)
         {
-            
-            //TODO
+            return;
         }
     }
 
@@ -82,7 +100,7 @@ public class EventUnit : MonoBehaviour
             foreach(GameObject gameObject in objects)
             {
                 objectList.Add(gameObject);
-                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = false;
+                disableIntereaction(gameObject);
                 //gameObject.transform.Find("Interaction Affordance").gameObject.SetActive(false);
             }
 
@@ -101,11 +119,12 @@ public class EventUnit : MonoBehaviour
         else if (m_ObjectType == 2)
         {
             //TODO 禁止交互相关功能
+            // 把关键词列表存下来, InteractionManger.getList()
         }
         else
         {
             objectList.Add(AnimationManager.instance.targetObject);
-            animationType = AnimationManager.instance.animationTyoe;
+            animationType = AnimationManager.instance.animationType;
             //动画
         }
     }
@@ -125,18 +144,23 @@ public class EventUnit : MonoBehaviour
             foreach (GameObject element in objectList)
             {
                 element.SetActive(true);
-                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = false;
+                disableIntereaction(element);
                 element.transform.Find("Content Affordance").gameObject.SendMessage("play");
             }
         }
         else if (m_ObjectType == 2)
         {
             //TODO 交互相关操作
+            // while(1)
+            // {
+            //      List2 = InteractionManager.getWords();
+            //      if (InteractionManager.compare(List1, List2)) break;
+            // }
         }
         else if (m_ObjectType == 3)
         {
             AnimationManager.instance.playAnimation(objectList[0], animationType);
-            //TODO 动画
+            
         }
     }
 

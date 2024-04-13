@@ -31,7 +31,7 @@ public class AnimationManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
+        //m_InteractionGroup.ClearGroupMembers();
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class AnimationManager : MonoBehaviour
     ///     1 : scale up，变大一下
     ///     2 : scale down, 变小一下
     /// </summary>
-    public int animationTyoe = -1;
+    public int animationType = -1;
 
     // 有选择物体和选择动画按钮
     // 点击选择物体按钮进入选择物体状态
@@ -48,6 +48,24 @@ public class AnimationManager : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void enableIntereaction(GameObject gameObject)
+    {
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = true;
+        }
+    }
+
+    public void disableIntereaction(GameObject gameObject)
+    {
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = false;
+        }
     }
 
     public void chooseObject()
@@ -60,20 +78,35 @@ public class AnimationManager : MonoBehaviour
             if (eventUnit.objectType != 0) continue;
             foreach (GameObject gameObject in eventUnit.objectList)
             {
-                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = true;
+                enableIntereaction(gameObject);
             }
         }
     }
 
     public void finishChoosingObject(bool ifConfirmed)
     {
+        FocusExitEventArgs args = new FocusExitEventArgs();
+        args.interactableObject = m_InteractionGroup.focusInteractable;
+        m_InteractionGroup.OnFocusExiting(args);
+        if (m_InteractionGroup.focusInteractable == null)
+        {
+            Debug.Log("wuhu!!!!!!!!");
+        }
+        else
+        {
+            Debug.Log("FFFFFFFFFF");
+        }
+
         choosingObject = false;
+        Debug.Log("结束选择物体");
         foreach (EventUnit eventUnit in content.GetComponent<EventLinkContentManager>().eventLink.link)
         {
-            if (eventUnit == null || eventUnit.objectType != 0) continue;
+            if (eventUnit.objectType != 0) continue;
+            Debug.Log("找到物体事件");
             foreach (GameObject gameObject in eventUnit.objectList)
             {
-                gameObject.transform.Find("Visuals").GetComponent<MeshCollider>().enabled = false;
+                Debug.Log("找到物体");
+                disableIntereaction(gameObject);
             }
         }
         if (!ifConfirmed)
@@ -84,12 +117,12 @@ public class AnimationManager : MonoBehaviour
 
     public void cancelChooseAnimation()
     {
-        animationTyoe = -1;
+        animationType = -1;
     }
 
     public void chooseAnimation(int type)
     {
-        animationTyoe = type;
+        animationType = type;
     }
 
     //public void play(GameObject targetObject, int animationtype)
@@ -111,16 +144,21 @@ public class AnimationManager : MonoBehaviour
 
     public void playAnimation(GameObject gameObject, int animationType)
     {
+        if (animationType == -1) return;
         if (animationType == 0)
         {
             gameObject.transform.DOShakePosition(10f, 0.03f);
         }
         else if (animationType == 1)
         {
-            // TODO
+            gameObject.transform.DOPunchScale(new Vector3(2f, 2f, 2f), 2.5f, 1, 0);
+            //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 5f);
         }
         else if (animationType == 2)
         {
+            //gameObject.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f);
+            gameObject.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f, 1, 0);
+            //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 2.5f);
 
         }
     }
