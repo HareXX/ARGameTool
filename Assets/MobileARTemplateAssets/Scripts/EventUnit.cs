@@ -40,6 +40,7 @@ public class EventUnit : MonoBehaviour
 
     public void enableIntereaction(GameObject gameObject)
     {
+        if (gameObject == null) return;
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
@@ -49,6 +50,7 @@ public class EventUnit : MonoBehaviour
 
     public void disableIntereaction(GameObject gameObject)
     {
+        if (gameObject == null) return;
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
