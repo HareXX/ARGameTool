@@ -171,6 +171,15 @@ public class EventUnit : MonoBehaviour
         objectList.Add(newObject);
     }
 
+    public void deleteEvent()
+    {
+        int objectCnt = objectList.Count;
+        for (int i = objectCnt - 1; i >= 0; --i)
+        {
+            Destroy(objectList[i]);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

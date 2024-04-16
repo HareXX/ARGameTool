@@ -53,7 +53,7 @@ public class EventLink : MonoBehaviour
     /// </summary>
     public void deleteEvent(int eventIndex)
     {
-        
+        m_Link[eventIndex].deleteEvent();
         m_Link.RemoveAt(eventIndex);
         --m_EventCount;
     }
