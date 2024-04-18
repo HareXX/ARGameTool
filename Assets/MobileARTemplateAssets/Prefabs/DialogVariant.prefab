@@ -130,7 +130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2599338838006719539}
-  - component: {fileID: 4160657956121790019}
   m_Layer: 0
   m_Name: Content Affordance
   m_TagString: Untagged
@@ -153,19 +152,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2388108249156663090}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4160657956121790019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257156374649187620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e15fe20d7e904044b8c242f973b1656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TextSource: {fileID: 4002935978196435583}
 --- !u!1 &2388108249156663089
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +165,7 @@ GameObject:
   - component: {fileID: 2388108249156663091}
   - component: {fileID: 5053743488405718696}
   - component: {fileID: -2755817988724448035}
+  - component: {fileID: 4290944420565385567}
   m_Layer: 0
   m_Name: DialogVariant
   m_TagString: Dialog
@@ -417,6 +404,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 5607650009255847503}
+--- !u!114 &4290944420565385567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388108249156663089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e15fe20d7e904044b8c242f973b1656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DialogContent: []
+  m_DialogCount: -1
+  m_TextSource: {fileID: 4002935978196435583}
 --- !u!1 &2742570018611513665
 GameObject:
   m_ObjectHideFlags: 0
