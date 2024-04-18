@@ -22,6 +22,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeVariant
       objectReference: {fileID: 0}
+    - target: {fileID: 1652468872093772896, guid: ebd7292e888c84f05924605e51048072,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435864238947048048, guid: ebd7292e888c84f05924605e51048072,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3471538223933167219, guid: ebd7292e888c84f05924605e51048072,
         type: 3}
       propertyPath: m_Enabled
@@ -80,6 +90,21 @@ PrefabInstance:
     - target: {fileID: 3900644259840735266, guid: ebd7292e888c84f05924605e51048072,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150859564725413516, guid: ebd7292e888c84f05924605e51048072,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150859564725413516, guid: ebd7292e888c84f05924605e51048072,
+        type: 3}
+      propertyPath: m_IgnoreFocusEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150859564725413516, guid: ebd7292e888c84f05924605e51048072,
+        type: 3}
+      propertyPath: m_IgnoreHoverEvents
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
