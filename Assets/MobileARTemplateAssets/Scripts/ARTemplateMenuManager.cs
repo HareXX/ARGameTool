@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -15,6 +16,12 @@ using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 /// </summary>
 public class ARTemplateMenuManager : MonoBehaviour
 {
+    public static ARTemplateMenuManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     [SerializeField]
     [Tooltip("Button that opens the create menu.")]
     Button m_CreateButton;
@@ -50,7 +57,7 @@ public class ARTemplateMenuManager : MonoBehaviour
         set => m_EditButton = value;
     }
 
-
+    public Button m_PreviewButton;
 
     [SerializeField]
     [Tooltip("The menu with all the creatable objects.")]
@@ -291,12 +298,23 @@ public class ARTemplateMenuManager : MonoBehaviour
             {
                 if(m_InteractionGroup.focusInteractable.transform.tag == "Dialog")
                 {
-                    m_EditButton.gameObject.SetActive(true);
+                    DialogEdit.instance.DialogVariant = m_InteractionGroup.focusInteractable.transform.gameObject;
+                    if (!DialogEdit.instance.isEditingDialog)
+                    {
+                        m_EditButton.gameObject.SetActive(true);
+                        m_PreviewButton.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        m_EditButton.gameObject.SetActive(false);
+                        m_PreviewButton.gameObject.SetActive(false);
+                    }
                 }
             }
             else
             {
                 m_EditButton.gameObject.SetActive(false);
+                m_PreviewButton.gameObject.SetActive(false);
             }
         }
 
