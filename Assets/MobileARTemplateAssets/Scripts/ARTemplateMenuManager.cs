@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -305,6 +306,7 @@ public class ARTemplateMenuManager : MonoBehaviour
             {
                 if(m_InteractionGroup.focusInteractable.transform.tag == "Dialog")
                 {
+                    DialogEdit.instance.DialogVariant = m_InteractionGroup.focusInteractable.transform.gameObject;
                     m_EditButton.gameObject.SetActive(true);
                 }
             }
