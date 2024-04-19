@@ -38,6 +38,8 @@ public class EventLinkContentManager : MonoBehaviour
     //TODO 保存按钮
     public GameObject saveButton;
 
+    public GameObject createButton;
+
     //
     public GameObject animationManager;
 
@@ -58,6 +60,12 @@ public class EventLinkContentManager : MonoBehaviour
         eventCount = 0;
     }
 
+    public void showCreateButton()
+    {
+        if (eventLink.link[focusedEventIndex].objectType <= 1)
+            createButton.SetActive(true);
+    }
+
     /// <summary>
     /// 显示编辑、删除按钮
     /// TODO 保存
@@ -76,6 +84,7 @@ public class EventLinkContentManager : MonoBehaviour
     {
         deleteButton.SetActive(false);
         editButton.SetActive(false);
+        createButton.SetActive(false);
     }
 
 
@@ -129,6 +138,7 @@ public class EventLinkContentManager : MonoBehaviour
         eventButtonList.Add(newEvent);
         ++eventCount;
         newEvent.transform.parent = content.transform;          // 把新事件放到content下
+        newEvent.transform.localScale = new Vector3(1, 1, 1);
         addButton.transform.SetSiblingIndex(eventCount + 1);    // 第一个固定是template，有eventCount个事件，所以是eventCount + 1
         if (type == 0)
         {

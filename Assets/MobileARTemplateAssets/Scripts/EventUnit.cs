@@ -178,6 +178,7 @@ public class EventUnit : MonoBehaviour
         {
             Destroy(objectList[i]);
         }
+        objectList.Clear();
     }
 
     // Start is called before the first frame update
