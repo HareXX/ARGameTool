@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -672408.8, y: 100}
+  m_AnchoredPosition: {x: -675072.75, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -2933,6 +2933,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956dd6cf70eaca449a45b6a95b96c8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToAdded: []
+  ObjectCnt: 0
+  stopSpawn: 1
+  content: {fileID: 0}
   m_CameraToFace: {fileID: 0}
   m_ObjectPrefabs:
   - {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
@@ -5420,6 +5424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b69ee2eb6cf244469ca83f3251765e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 5
+  strength: 5
 --- !u!1 &721521589
 GameObject:
   m_ObjectHideFlags: 0
@@ -16243,6 +16249,7 @@ MonoBehaviour:
   m_PlaneManager: {fileID: 151853166}
   m_DebugMenu: {fileID: 239212526}
   m_DebugMenuSlider: {fileID: 1139628616}
+  choosingObject: 0
 --- !u!1 &2102230694
 GameObject:
   m_ObjectHideFlags: 0
