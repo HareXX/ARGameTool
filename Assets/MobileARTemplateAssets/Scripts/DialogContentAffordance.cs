@@ -7,7 +7,7 @@ using UnityEngine;
 public class DialogContentAffordance : MonoBehaviour
 {
 
-    List<string> m_DialogContent = new List<string>();
+    public List<string> m_DialogContent = new List<string>();
 
     /// <summary>
     /// 存储对话内容
@@ -18,7 +18,7 @@ public class DialogContentAffordance : MonoBehaviour
         set => m_DialogContent = value;
     }
 
-    int m_DialogCount = -1;
+    public int m_DialogCount = -1;
 
     /// <summary>
     /// 对话数量
@@ -29,16 +29,16 @@ public class DialogContentAffordance : MonoBehaviour
         set => m_DialogCount = value;
     }
 
-    int m_CurrentDialogIndex = -1;
+    public int m_CurrentDialogIndex = -1;
 
     /// <summary>
     /// 当前对话
     /// </summary>
-    public int currentDialogIndex
-    {
-        get => m_CurrentDialogIndex;
-        set => m_CurrentDialogIndex = value;
-    }
+    //public int currentDialogIndex
+    //{
+    //    get => m_CurrentDialogIndex;
+    //    set => m_CurrentDialogIndex = value;
+    //}
 
     [SerializeField]
     TMP_Text m_TextSource;
@@ -124,10 +124,35 @@ public class DialogContentAffordance : MonoBehaviour
         
     }
 
+    private float delayTime = 2;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void play()
+    {
+        StartCoroutine(DialogCoroutine(Interval.Instance.IntervalSlider.value));
+    }
+
+    IEnumerator DialogCoroutine(float seconds)
+    {
+        foreach (string content in m_DialogContent)
+        {
+            updateDialogContent(content);
+            yield return new WaitForSeconds(seconds);
+        }
+    }
+    /// <summary>
+    /// 把当前文本框的内容更新成content
+    /// </summary>
+    /// <param name="content"></param>
+
     public void updateDialogContent(string content)
     {
         m_TextSource.text = content;
     }
+
+    
 
     // Start is called before the first frame update
     void Start()
