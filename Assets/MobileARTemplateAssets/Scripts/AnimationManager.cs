@@ -36,9 +36,10 @@ public class AnimationManager : MonoBehaviour
 
     /// <summary>
     ///     -1: 未选择
-    ///     0 : shake，晃动
-    ///     1 : scale up，变大一下
-    ///     2 : scale down, 变小一下
+    ///     0 : 自带动画
+    ///     1 : shake，晃动
+    ///     2 : scale up，变大一下
+    ///     3 : scale down, 变小一下
     /// </summary>
     public int animationType = -1;
 
@@ -147,14 +148,22 @@ public class AnimationManager : MonoBehaviour
         if (animationType == -1) return;
         if (animationType == 0)
         {
-            gameObject.transform.DOShakePosition(10f, 0.03f);
+            Debug.Log("播放动画");
+            gameObject.GetComponentInChildren<Animator>().Play("Animation", 0, 0);
+            //gameObject.GetComponent<Animator>().Play("Animation", 0, 0);
+            //gameObject.GetComponent<Animator>().SetBool("isOpen", false);
+            //gameObject.GetComponent<Animator>().
         }
         else if (animationType == 1)
+        {
+            gameObject.transform.DOShakePosition(10f, 0.03f);
+        }
+        else if (animationType == 2)
         {
             gameObject.transform.DOPunchScale(new Vector3(2f, 2f, 2f), 2.5f, 1, 0);
             //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 5f);
         }
-        else if (animationType == 2)
+        else if (animationType == 3)
         {
             //gameObject.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f);
             gameObject.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f, 1, 0);
