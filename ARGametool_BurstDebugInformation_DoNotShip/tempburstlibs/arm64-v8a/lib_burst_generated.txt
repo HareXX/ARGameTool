@@ -10,6 +10,10 @@ Library: E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\l
 --target-framework=NetFramework
 --float-mode=Fast
 --assembly-defines=Assembly-CSharp;
+--assembly-defines=DOTween;
+--assembly-defines=DOTween43;
+--assembly-defines=DOTween46;
+--assembly-defines=DOTweenPro;
 --assembly-defines=Mono.Security;
 --assembly-defines=mscorlib;
 --assembly-defines=System.Configuration;
@@ -38,6 +42,7 @@ Library: E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\l
 --assembly-defines=UnityEngine;
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=E:\Projects\Unity\ARGameTool\Temp\Burst
+--debug=LineOnly
 --key-folder=E:/Unity/Unity Install/2022.3.20f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=E:\Projects\Unity\ARGameTool\Library\Burst
 --output=E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
@@ -54,6 +59,10 @@ Library: E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\l
 --float-precision=Standard
 --target-framework=NetFramework
 --assembly-defines=Assembly-CSharp;
+--assembly-defines=DOTween;
+--assembly-defines=DOTween43;
+--assembly-defines=DOTween46;
+--assembly-defines=DOTweenPro;
 --assembly-defines=Mono.Security;
 --assembly-defines=mscorlib;
 --assembly-defines=System.Configuration;
@@ -82,6 +91,7 @@ Library: E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\l
 --assembly-defines=UnityEngine;
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=E:\Projects\Unity\ARGameTool\Temp\Burst
+--debug=LineOnly
 --key-folder=E:/Unity/Unity Install/2022.3.20f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=E:\Projects\Unity\ARGameTool\Library\Burst
 --output=E:\Projects\Unity\ARGameTool\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated

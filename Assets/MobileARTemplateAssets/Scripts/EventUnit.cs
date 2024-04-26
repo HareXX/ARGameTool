@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EventUnit : MonoBehaviour
 {
-    int m_ObjectType = -1;
+    public int m_ObjectType = -1;
 
     /// <summary>
     /// 元素类型
@@ -18,6 +18,8 @@ public class EventUnit : MonoBehaviour
         get => m_ObjectType;
         set => m_ObjectType = value;
     }
+
+    public int animationType;
 
     /// <summary>
     /// 当前事件的所有元素
@@ -35,7 +37,27 @@ public class EventUnit : MonoBehaviour
         m_ObjectType = type;
     }
 
-    
+
+    public void enableIntereaction(GameObject gameObject)
+    {
+        if (gameObject == null) return;
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = true;
+        }
+    }
+
+    public void disableIntereaction(GameObject gameObject)
+    {
+        if (gameObject == null) return;
+        MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider visual in visuals)
+        {
+            visual.enabled = false;
+        }
+    }
+
     /// <summary>
     /// 允许修改当前事件，支持和组件交互，如果是对话框的话选择编辑之后将可见
     /// </summary>
@@ -44,10 +66,11 @@ public class EventUnit : MonoBehaviour
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-            //把每个物体设置成不可交互
+            //把每个物体设置成可交互
             foreach (GameObject element in objectList)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(true);
+                Debug.Log("Oooooooooaoooo");
+                enableIntereaction(element);
             }
         }
         else if (m_ObjectType == 1)
@@ -57,24 +80,36 @@ public class EventUnit : MonoBehaviour
                 element.SetActive(true);
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 添加交互
+        }
+        else if (m_ObjectType == 2)
+        {
+            return;
         }
     }
 
     /// <summary>
     /// 保存当前事件，禁止修改,如果是对话框的话保存之后将不可见
     /// </summary>
-    public void saveEvent()
+    public void saveEvent(List<GameObject> objects)
     {
+        Debug.Log("进入EventUnit");
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-            foreach (GameObject element in objectList)
+            foreach(GameObject gameObject in objects)
             {
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                objectList.Add(gameObject);
+                disableIntereaction(gameObject);
+                //gameObject.transform.Find("Interaction Affordance").gameObject.SetActive(false);
             }
+
+            //foreach (GameObject element in objectList)
+            //{
+            //    element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+            //}
         }
         else if (m_ObjectType == 1)
         {
@@ -83,9 +118,16 @@ public class EventUnit : MonoBehaviour
                 element.SetActive(false);
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 禁止交互相关功能
+            // 把关键词列表存下来, InteractionManger.getList()
+        }
+        else
+        {
+            objectList.Add(AnimationManager.instance.targetObject);
+            animationType = AnimationManager.instance.animationType;
+            //动画
         }
     }
 
@@ -104,14 +146,39 @@ public class EventUnit : MonoBehaviour
             foreach (GameObject element in objectList)
             {
                 element.SetActive(true);
-                element.transform.Find("Interaction Affordance").gameObject.SetActive(false);
+                disableIntereaction(element);
                 element.transform.Find("Content Affordance").gameObject.SendMessage("play");
             }
         }
-        else
+        else if (m_ObjectType == 2)
         {
             //TODO 交互相关操作
+            // while(1)
+            // {
+            //      List2 = InteractionManager.getWords();
+            //      if (InteractionManager.compare(List1, List2)) break;
+            // }
         }
+        else if (m_ObjectType == 3)
+        {
+            AnimationManager.instance.playAnimation(objectList[0], animationType);
+            
+        }
+    }
+
+    public void addObject(GameObject newObject)
+    {
+        objectList.Add(newObject);
+    }
+
+    public void deleteEvent()
+    {
+        int objectCnt = objectList.Count;
+        for (int i = objectCnt - 1; i >= 0; --i)
+        {
+            Destroy(objectList[i]);
+        }
+        objectList.Clear();
     }
 
     // Start is called before the first frame update
