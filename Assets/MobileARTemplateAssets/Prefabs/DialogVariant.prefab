@@ -418,6 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DialogContent: []
   m_DialogCount: -1
+  m_CurrentDialogIndex: -1
   m_TextSource: {fileID: 4002935978196435583}
 --- !u!1 &2742570018611513665
 GameObject:
@@ -657,7 +658,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 111111111111111111111111111111111111111111111111111111111111111111111111111111
+  m_text: Please add scenario!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
