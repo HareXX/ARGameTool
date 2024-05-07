@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class Save
 {
+    
+    public List<int> objectID = new List<int>();
+
     //虚拟物体数据
     public List<SerVector3> position = new List<SerVector3>();
     public List<SerQuaternion> rotation = new List<SerQuaternion>();
@@ -12,12 +15,12 @@ public class Save
     public List<string> name = new List<string>();
 
     //该物体属于第几个event
-    public List<int> eventCount = new List<int>();
+    public List<List<int>> eventCount = new List<List<int>>();
 
-    //该物体的交互类型
+    //该事件的交互类型
     public List <int> interactionType = new List<int>();
 
-    //该物体的动画类型
+    //该事件的动画类型
     public List<int> animationType = new List<int>();
 
     //事件链中事件数量

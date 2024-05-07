@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,34 +26,48 @@ public class SaveInFile : MonoBehaviour
         eventLinkContentManager = FindObjectOfType<EventLinkContentManager>();
         eventLink = eventLinkContentManager.eventLink;
 
-        save.eventLink = eventLink.eventCount;
+        save.eventLink = eventLink.eventCount+1;
         int count = 0;
         foreach(EventUnit eventUnit in eventLink.link)
         {
             save.eventType.Add(eventUnit.objectType);
             foreach(GameObject gameObject in eventUnit.objectList)
             {
+                int ID = gameObject.GetHashCode();
+                if (save.objectID.Contains(ID))
+                {
+                    save.eventCount[save.objectID.IndexOf(ID)].Add(count);
+                    continue;
+                }
+                save.objectID.Add(ID);
                 save.position.Add(new SerVector3(gameObject.transform.position));
                 save.scale.Add(new SerVector3(gameObject.transform.localScale));
                 save.rotation.Add(new SerQuaternion(gameObject.transform.rotation));
                 save.name.Add(gameObject.name);
-                save.eventCount.Add(count);           
+                List<int> goEventCount =new List<int>();
+                goEventCount.Add(count);
+                save.eventCount.Add(goEventCount);
+
                 
-                if(eventUnit.objectType == 0|| eventUnit.objectType == 1) 
+            }
+
+                if (eventUnit.objectType == 0 || eventUnit.objectType == 1)
                 {
                     save.interactionType.Add(0);
                     save.animationType.Add(0);
-                }else if(eventUnit.objectType == 2)
+                }
+                else if (eventUnit.objectType == 2)
                 {
                     save.interactionType.Add(0);//加交互类型
                     save.animationType.Add(0);
                 }
-                else if(eventUnit.objectType == 3)
+                else if (eventUnit.objectType == 3)
                 {
                     save.interactionType.Add(0);
                     save.animationType.Add(eventUnit.animationType);
                 }
-            }
+
+
             count++;
         }
         /*
@@ -86,34 +101,38 @@ public class SaveInFile : MonoBehaviour
 
         List<EventUnit> eventLink = new List<EventUnit>();
 
-        int j = 0;
+        
         for (int i = 0; i < save.eventLink;i++)
         {
             EventUnit eventUnit = new EventUnit();
             eventUnit.objectType = save.eventType[i];
-            for(; j < save.eventCount.Count; j++)
+            if (save.interactionType[i] != 0)
             {
-                if (save.eventCount[j] == i)
-                {
-                    GameObject prefab = dictionary[save.name[i]];
-                    prefab.transform.localScale = save.scale[i].GetVector3();
-                    GameObject gameObject = Instantiate(prefab, save.position[i].GetVector3(), save.rotation[i].GetQuaternion(), spawner.transform);
-                    eventUnit.objectList.Add(gameObject);
-                    if (save.interactionType[j] != 0)
-                    {
                         //添加交互
-                    }
-                    if (save.animationType[j] != 0)
-                    {
-                        eventUnit.animationType = save.animationType[j];
-                    }
-                }
-                else
-                {
-                    break;
-                }
+            }
+            if (save.animationType[i] != 0)
+            {
+                eventUnit.animationType = save.animationType[i];
             }
             eventLink.Add(eventUnit);
+        }
+
+        Debug.Log(save.eventLink);
+        Debug.Log(eventLink.Count);
+
+        for(int j = 0; j < save.eventCount.Count; j++)
+        {
+            GameObject prefab = dictionary[save.name[j]];
+            prefab.transform.localScale = save.scale[j].GetVector3();
+            GameObject gameObject = Instantiate(prefab, save.position[j].GetVector3(), save.rotation[j].GetQuaternion(), spawner.transform);
+            
+            for(int k = 0; k < save.eventCount[j].Count; k++) 
+            {
+                Debug.Log(save.eventCount[j][k]);
+                eventLink[save.eventCount[j][k]].objectList.Add(gameObject);
+
+            }
+                          
         }
 
         EventLink link = new EventLink();
