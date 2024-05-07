@@ -9,6 +9,8 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+using System;
+using System.Threading.Tasks;
 
 public class AnimationManager : MonoBehaviour
 {
@@ -75,7 +77,6 @@ public class AnimationManager : MonoBehaviour
         Debug.Log("开始选择物体");
         foreach (EventUnit eventUnit in content.GetComponent<EventLinkContentManager>().eventLink.link)
         {
-            Debug.Log("Ovo");
             if (eventUnit.objectType != 0) continue;
             foreach (GameObject gameObject in eventUnit.objectList)
             {
@@ -89,14 +90,6 @@ public class AnimationManager : MonoBehaviour
         FocusExitEventArgs args = new FocusExitEventArgs();
         args.interactableObject = m_InteractionGroup.focusInteractable;
         m_InteractionGroup.OnFocusExiting(args);
-        if (m_InteractionGroup.focusInteractable == null)
-        {
-            Debug.Log("wuhu!!!!!!!!");
-        }
-        else
-        {
-            Debug.Log("FFFFFFFFFF");
-        }
 
         choosingObject = false;
         Debug.Log("结束选择物体");
@@ -137,38 +130,78 @@ public class AnimationManager : MonoBehaviour
         {
             targetObject = m_InteractionGroup?.focusInteractable.transform.gameObject;
             confirmBox.SetActive(true);
-            Debug.Log("Damn!!!!!!!!!!");
+            Debug.Log("选中物体出现确认");
         }
         // 在选择物体状态下，参考ARTemplateManager，如果选中物体，则出现确定按钮
         //
     }
+
+    public static void WaitFunctions(int waitTime)
+    {
+        if (waitTime <= 0) return;
+        DateTime nowTimer = DateTime.Now;
+        int interval = 0;
+        while (interval < waitTime)
+        {
+            TimeSpan spand = DateTime.Now - nowTimer;
+            interval = spand.Seconds;
+        }
+
+    }
+
+    IEnumerator playDefault(GameObject gameObject)
+    {
+        gameObject.GetComponentInChildren<Animator>().Play("Animation", 0, 0);
+        yield return new WaitForSeconds(10);
+        content.GetComponent<EventLinkContentManager>().nextEvent();
+    }
+
+    IEnumerator playShake(GameObject gameObject)
+    {
+        gameObject.transform.DOShakePosition(10f, 0.03f);
+        yield return new WaitForSeconds(10);
+        content.GetComponent<EventLinkContentManager>().nextEvent();
+    }
+
+    IEnumerator playScaleUp(GameObject gameObject)
+    {
+        gameObject.transform.DOPunchScale(new Vector3(2f, 2f, 2f), 5f, 1, 0);
+        yield return new WaitForSeconds(10);
+        content.GetComponent<EventLinkContentManager>().nextEvent();
+    }
+
+    IEnumerator playScaleDown(GameObject gameObject)
+    {
+        gameObject.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0.5f), 5f, 1, 0);
+        yield return new WaitForSeconds(10);
+        content.GetComponent<EventLinkContentManager>().nextEvent();
+    }
+
 
     public void playAnimation(GameObject gameObject, int animationType)
     {
         if (animationType == -1) return;
         if (animationType == 0)
         {
-            Debug.Log("播放动画");
-            gameObject.GetComponentInChildren<Animator>().Play("Animation", 0, 0);
-            //gameObject.GetComponent<Animator>().Play("Animation", 0, 0);
-            //gameObject.GetComponent<Animator>().SetBool("isOpen", false);
-            //gameObject.GetComponent<Animator>().
+            Debug.Log("播放default动画");
+            StartCoroutine(playDefault(gameObject));
+            
         }
         else if (animationType == 1)
         {
-            gameObject.transform.DOShakePosition(10f, 0.03f);
+            Debug.Log("播放shake动画");
+            StartCoroutine(playShake(gameObject));
         }
         else if (animationType == 2)
         {
-            gameObject.transform.DOPunchScale(new Vector3(2f, 2f, 2f), 2.5f, 1, 0);
-            //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 5f);
+            Debug.Log("播放变大动画");
+            StartCoroutine(playScaleUp(gameObject));
+
         }
         else if (animationType == 3)
         {
-            //gameObject.transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f);
-            gameObject.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f, 1, 0);
-            //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 2.5f);
-
+            Debug.Log("播放缩小动画");
+            StartCoroutine(playScaleDown(gameObject));
         }
     }
 }

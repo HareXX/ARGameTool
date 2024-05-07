@@ -67,12 +67,9 @@ public class EventLink : MonoBehaviour
     /// <summary>
     /// 依次运行每个事件
     /// </summary>
-    public void play()
+    public void play(int eventIndex)
     {
-        foreach (EventUnit eventUnit in m_Link)
-        {
-            eventUnit.play();
-        }
+        m_Link[eventIndex].play();
     }
     
 

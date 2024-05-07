@@ -35,12 +35,12 @@ public class EventLinkContentManager : MonoBehaviour
     //编辑按钮
     public GameObject editButton;
 
-    //TODO 保存按钮
+    // 保存按钮
     public GameObject saveButton;
 
     public GameObject createButton;
 
-    //
+    //动画管理器
     public GameObject animationManager;
 
     //UI
@@ -247,7 +247,7 @@ public class EventLinkContentManager : MonoBehaviour
         else if (eventType == 3)
         {
             eventLink.saveEvent(focusedEventIndex, null);
-            animationManager.SetActive(false);
+            //animationManager.SetActive(false);
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(false);
             Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
@@ -255,5 +255,33 @@ public class EventLinkContentManager : MonoBehaviour
             Debug.Log(eventLink.link[focusedEventIndex].animationType);
             AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], eventLink.link[focusedEventIndex].animationType);
         }
+    }
+
+    public void nextEvent()
+    {
+        eventButton.transform.Find("SelectionBox").gameObject.SetActive(false);
+        ++focusedEventIndex;
+        if (focusedEventIndex == eventCount) return;
+        eventButton = eventButtonList[focusedEventIndex];
+        eventButton.transform.Find("SelectionBox").gameObject.SetActive(true);
+        eventLink.play(focusedEventIndex);
+    }
+    
+
+    public void playEvent()
+    {
+        focusedEventIndex = 0;
+        eventButton = eventButtonList[focusedEventIndex];
+        eventButton.transform.Find("SelectionBox").gameObject.SetActive(true);
+        eventLink.play(focusedEventIndex);
+        
+
+        //for (int eventIndex = 0; eventIndex < eventCount; ++eventIndex)
+        //{
+        //    eventButton = eventButtonList[eventIndex];
+        //    eventButton.transform.Find("SelectionBox").gameObject.SetActive(true);
+        //    eventLink.play(eventIndex);
+        //    eventButton.transform.Find("SelectionBox").gameObject.SetActive(false);
+        //}
     }
 }

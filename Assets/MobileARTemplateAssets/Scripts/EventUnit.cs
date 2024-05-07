@@ -26,10 +26,28 @@ public class EventUnit : MonoBehaviour
     /// </summary>
     List<GameObject> m_ObjectList = new List<GameObject>();
 
+    public bool endPlaying = false;
+
     public List<GameObject> objectList
     {
         get => m_ObjectList;
         set => m_ObjectList = value;
+    }
+
+    public void showObject()
+    {
+        foreach (GameObject gameObject in objectList)
+        {
+            gameObject.SetActive(true);
+        }
+    }
+
+    public void hideObject()
+    {
+        foreach (GameObject gameObject in objectList)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void setType(int type)
@@ -131,15 +149,33 @@ public class EventUnit : MonoBehaviour
         }
     }
 
+    //IEnumerator ObjectCoroutine()
+    //{
+    //    yield return new WaitForSeconds(5);
+    //}
+
+    //IEnumerator DialogCoroutine()
+    //{
+    //    yield return new WaitForSeconds(10)
+    //}
+
+    public void endPlay()
+    {
+        endPlaying = true;
+    }
+
     /// <summary>
     /// 运行时的操作
     /// </summary>
     public void play()
     {
+        endPlaying = false;
+        showObject();
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
             return;
+                
         }
         else if (m_ObjectType == 1)
         {
@@ -161,9 +197,15 @@ public class EventUnit : MonoBehaviour
         }
         else if (m_ObjectType == 3)
         {
+            Debug.Log("动画对应物体");
+            Debug.Log(objectList[0]);
+            Debug.Log(".............................");
             AnimationManager.instance.playAnimation(objectList[0], animationType);
-            
+
         }
+            
+        
+        
     }
 
     public void addObject(GameObject newObject)
@@ -174,6 +216,11 @@ public class EventUnit : MonoBehaviour
     public void deleteEvent()
     {
         int objectCnt = objectList.Count;
+        if (objectType > 1)
+        {
+            objectList.Clear();
+            return;
+        }
         for (int i = objectCnt - 1; i >= 0; --i)
         {
             Destroy(objectList[i]);
