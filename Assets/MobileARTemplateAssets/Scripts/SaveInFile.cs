@@ -90,6 +90,7 @@ public class SaveInFile : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
         Debug.Log("Clear");
 
         Dictionary<string, GameObject> dictionary = new Dictionary<string, GameObject>();
@@ -100,12 +101,15 @@ public class SaveInFile : MonoBehaviour
         dictionary.Add("DialogVariant(Clone)", Dialog);
 
         List<EventUnit> eventLink = new List<EventUnit>();
+        List<GameObject> eventButtonList = new List<GameObject>();
+        eventLinkContentManager = FindObjectOfType<EventLinkContentManager>();
+        eventLinkContentManager.eventButtonList = eventButtonList;
 
-        
         for (int i = 0; i < save.eventLink;i++)
         {
             EventUnit eventUnit = new EventUnit();
             eventUnit.objectType = save.eventType[i];
+            eventLinkContentManager.newEvent(save.eventType[i]);
             if (save.interactionType[i] != 0)
             {
                         //Ìí¼Ó½»»¥
