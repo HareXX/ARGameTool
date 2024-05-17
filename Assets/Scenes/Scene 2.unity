@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -808392.3, y: 100}
+  m_AnchoredPosition: {x: -817424.4, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -10553,7 +10553,7 @@ MonoBehaviour:
   deleteButton: {fileID: 1621827930}
   editButton: {fileID: 80586337}
   saveButton: {fileID: 784536417}
-  createButton: {fileID: 0}
+  createButton: {fileID: 1297810754}
   animationManager: {fileID: 2065750890}
   UI: {fileID: 2099970465}
   objectToAdded: []

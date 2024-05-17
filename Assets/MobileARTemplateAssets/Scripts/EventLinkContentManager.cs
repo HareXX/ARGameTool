@@ -43,6 +43,7 @@ public class EventLinkContentManager : MonoBehaviour
     //
     public GameObject animationManager;
 
+    //public GameObject interactionManager;
     //UI
     public GameObject UI;
 
@@ -196,8 +197,9 @@ public class EventLinkContentManager : MonoBehaviour
         if (eventType == 0)
         {
             ObjectSpawner.stopSpawn = false;
-            UI.GetComponent<GoalManager>().StartCoaching();
             UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
+            UI.GetComponent<GoalManager>().StartCoaching();
+            //UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
             eventLink.editEvent(focusedEventIndex);
         }
         else if (eventType == 1)
@@ -206,7 +208,11 @@ public class EventLinkContentManager : MonoBehaviour
         }
         else if (eventType == 2)
         {
+            animationManager.SetActive(true);
+            animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(true);
+            animationManager.transform.Find("Button (Choose Interaction)").gameObject.SetActive(true);
             // TODO 展示交互相关UI
+
         }
         else if (eventType == 3)
         {
