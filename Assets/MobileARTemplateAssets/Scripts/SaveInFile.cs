@@ -23,6 +23,11 @@ public class SaveInFile : MonoBehaviour
     {
         Save save = new Save();
 
+        GameObject spawner = GameObject.Find("Object Spawner");
+        GameObject camera = GameObject.Find("Main Camera");
+        save.sPosition = new SerVector3(spawner.transform.position - camera.transform.position);
+        save.sRotation = new SerQuaternion(Quaternion.Inverse(camera.transform.rotation)*spawner.transform.rotation);
+
         eventLinkContentManager = FindObjectOfType<EventLinkContentManager>();
         eventLink = eventLinkContentManager.eventLink;
 
@@ -86,6 +91,11 @@ public class SaveInFile : MonoBehaviour
     private void LoadSave(Save save)
     {
         GameObject spawner = GameObject.Find("Object Spawner");
+        GameObject camera = GameObject.Find("Main Camera");
+
+        spawner.transform.position = camera.transform.position + save.sPosition.GetVector3();
+        spawner.transform.rotation = camera.transform.rotation * save.sRotation.GetQuaternion();
+
         foreach (Transform child in spawner.transform)
         {
             Destroy(child.gameObject);
@@ -148,11 +158,30 @@ public class SaveInFile : MonoBehaviour
 
     }
 
-    public void SaveGame()
-    {
+    public void SaveGame(string fileName = "000")
+    {   
+        BinaryFormatter binaryFormatter = new BinaryFormatter();      
+
+        gameFiles games = new gameFiles();
+        if (File.Exists(Application.persistentDataPath + "/games.save")) {
+            FileStream fs = File.Open(Application.persistentDataPath + "/games.save", FileMode.Open);
+            games = (gameFiles)binaryFormatter.Deserialize(fs);
+            if (games.games.Contains(fileName))
+            {
+                Debug.Log("File Exists");
+                return;
+            }
+            fs.Close();
+        }
+        
+        FileStream fs1 = File.Create(Application.persistentDataPath + "/games.save");
+        games.games.Add(fileName);
+        binaryFormatter.Serialize(fs1, games);
+        fs1.Close();
+        
         Save save = CreateSave();
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
-        FileStream fileStream = File.Create(Application.persistentDataPath + "/gamesave.txt");
+        
+        FileStream fileStream = File.Create(Application.persistentDataPath + "/" + fileName + ".save");
         binaryFormatter.Serialize(fileStream, save);
         fileStream.Close();
         Debug.Log(Application.persistentDataPath);
@@ -160,28 +189,41 @@ public class SaveInFile : MonoBehaviour
 
     }
 
-    public void LoadGame()
+    public void LoadGame(string fileName = "000")
     {
-
-        //GameObject spawner = GameObject.Find("Object Spawner");
-        if (File.Exists(Application.persistentDataPath + "/gamesave.txt"))
+        if(!File.Exists(Application.persistentDataPath + "/games.save"))
         {
-            /*
+            Debug.Log("NoSave");
+            return;
+        }
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream fs = File.Open(Application.persistentDataPath + "/games.save", FileMode.Open);
+        gameFiles games = (gameFiles)binaryFormatter.Deserialize(fs);
+        if (!games.games.Contains(fileName))
+        {
+            Debug.Log("NoSave");
+            return;
+        }
+        fs.Close();
+        //GameObject spawner = GameObject.Find("Object Spawner");
+        /*if (File.Exists(Application.persistentDataPath + "/" + fileName + ".save"))
+        {
+            *//*
             foreach (Transform child in spawner.transform)
             {
                 Destroy(child.gameObject);
             }
             Debug.Log("Clear");
-            */
+            *//*
         }
         else
         {
             Debug.Log("NoSave");
             return;
-        }
+        }*/
 
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
-        FileStream fileStream = File.Open(Application.persistentDataPath + "/gamesave.txt", FileMode.Open);
+        
+        FileStream fileStream = File.Open(Application.persistentDataPath + "/" + fileName + ".save", FileMode.Open);
 
         Save save = (Save)binaryFormatter.Deserialize(fileStream);
         fileStream.Close();
@@ -207,5 +249,36 @@ public class SaveInFile : MonoBehaviour
         Debug.Log("Load");
         
     }
+
+    public void DeleteGame(string fileName = "000")
+    {
+        if (!File.Exists(Application.persistentDataPath + "/games.save"))
+        {
+            Debug.Log("NoSave");
+            return;
+        }
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream fs = File.Open(Application.persistentDataPath + "/games.save", FileMode.Open);
+        gameFiles games = (gameFiles)binaryFormatter.Deserialize(fs);
+        if (!games.games.Contains(fileName))
+        {
+            Debug.Log("NoSave");
+            return;
+        }
+        fs.Close();
+        FileStream fs1 = File.Create(Application.persistentDataPath + "/games.save");
+        games.games.Remove(fileName);
+        binaryFormatter.Serialize(fs1, games);
+        fs1.Close();
+
+        File.Delete(Application.persistentDataPath + "/" + fileName + ".save");
+    }
 }
 
+
+
+[System.Serializable]
+public class gameFiles
+{
+   public List<string> games = new List<string>();
+}

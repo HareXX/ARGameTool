@@ -6,6 +6,10 @@ using UnityEngine;
 public class Save
 {
     
+    public SerVector3 sPosition = new SerVector3();
+    public SerQuaternion sRotation = new SerQuaternion();
+    
+
     public List<int> objectID = new List<int>();
 
     //虚拟物体数据
