@@ -16,6 +16,6 @@ public class VoiceInteractionManager : MonoBehaviour
 
     public void OnSubmit()
     {
-        //todo
+        EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex].voiceInteractionSentence = inputText.text;
     }
 }

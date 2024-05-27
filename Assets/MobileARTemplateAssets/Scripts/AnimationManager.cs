@@ -24,6 +24,8 @@ public class AnimationManager : MonoBehaviour
     public bool choosingObject = false;
 
     public GameObject confirmBox;
+    public GameObject confirmBox1;
+
 
     public XRInteractionGroup m_InteractionGroup;
 
@@ -133,10 +135,18 @@ public class AnimationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (choosingObject == true &&  m_InteractionGroup?.focusInteractable != null)
+        if (choosingObject == true && m_InteractionGroup?.focusInteractable != null)
         {
             targetObject = m_InteractionGroup?.focusInteractable.transform.gameObject;
-            confirmBox.SetActive(true);
+            if (content.GetComponent<EventLinkContentManager>().eventLink.link[content.GetComponent<EventLinkContentManager>().focusedEventIndex].objectType == 2)
+            {
+                confirmBox1.SetActive(true);
+            }
+            else
+            {
+                confirmBox.SetActive(true);
+            }
+
             Debug.Log("Damn!!!!!!!!!!");
         }
         // 在选择物体状态下，参考ARTemplateManager，如果选中物体，则出现确定按钮

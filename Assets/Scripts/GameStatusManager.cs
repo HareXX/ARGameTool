@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameStatusManager : MonoBehaviour
 {
-    private static GameStatusManager instance;
+    public static GameStatusManager instance;
     public bool isEditing;
     public TextMeshProUGUI TextStatus;
     public Button ButtonNewProject;

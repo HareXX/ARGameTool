@@ -9,10 +9,19 @@ using TMPro;
 
 public class SpeechScript : MonoBehaviour
 {
+    public static SpeechScript Instance;
+    public float cosResult;
+    public GameObject[] voiceToHide;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     public string api_key = "ZO7xgi0yOSQ9BEEQXWDPSK3s";
     public string secret_Key = "sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB";
     string accessToken = string.Empty;
+
+    public string inputText = "芝麻开门";
 
     //bool ishaveMic = false; //检测是否连接麦克风
     string currentDeviceName = string.Empty; //当前录音设备名称(默认)
@@ -23,8 +32,8 @@ public class SpeechScript : MonoBehaviour
 
     string resulrStr;//存储识别结果
     TextMeshProUGUI resultText;//显示识别结果
-    public Button startBtn;//开始识别按钮
-    public Button endBtn;//结束识别按钮
+    Button startBtn;//开始识别按钮
+    Button endBtn;//结束识别按钮
 
     void Start()
     {
@@ -38,7 +47,10 @@ public class SpeechScript : MonoBehaviour
             Debug.LogError("Result GameObject not found!");
         }
 
-        
+        GameObject.Find("Start").SetActive(true);
+        startBtn = GameObject.Find("Start").GetComponent<Button>();
+        GameObject.Find("End").SetActive(true);
+        endBtn = GameObject.Find("End").GetComponent<Button>();
 
         StartCoroutine(_GetAccessToken());//获取accessToken
 
@@ -47,6 +59,7 @@ public class SpeechScript : MonoBehaviour
 
         // 输出所有可用的录音设备名称
         string[] devices = Microphone.devices;
+
         foreach (string device in devices)
         {
             Debug.Log("Available Microphone Device: " + device);
@@ -153,6 +166,23 @@ public class SpeechScript : MonoBehaviour
                 {
                     resulrStr = match.Groups[1].ToString();
                     Debug.Log(resulrStr);
+                    // 计算TF-IDF值
+                    //float tfIdfValue = CalculateTFIDF(resulrStr, inputText);
+
+                    // 计算余弦相似度
+                    float cosineSimilarity = CalculateCosineSimilarity(resulrStr, inputText);
+
+                    // 输出相似度
+                    //Debug.Log("TF-IDF值：" + tfIdfValue);
+                    Debug.Log("余弦相似度：" + cosineSimilarity);
+
+                    // 更新UI显示
+                    resulrStr = resulrStr + "余弦相似度：" + cosineSimilarity;
+                    if (cosineSimilarity == 1)
+                    {
+                        resulrStr = resulrStr + "匹配成功！";
+                    }
+                    Debug.Log(resulrStr);
                 }
             }
             else
@@ -189,5 +219,135 @@ public class SpeechScript : MonoBehaviour
             }
         }
     }
+
+    /*
+    // 计算TF值
+    float CalculateTF(string[] words, string word)
+    {
+        int count = 0;
+        foreach (string w in words)
+        {
+            if (w.Equals(word, StringComparison.OrdinalIgnoreCase))
+            {
+                count++;
+            }
+        }
+        return (float)count / words.Length;
+    }
+
+    // 计算IDF值
+    float CalculateIDF(List<string[]> documents, string word)
+    {
+        int count = 0;
+        foreach (string[] doc in documents)
+        {
+            foreach (string w in doc)
+            {
+                if (w.Equals(word, StringComparison.OrdinalIgnoreCase))
+                {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return Mathf.Log(documents.Count / (float)(count + 1));
+    }
+
+    // 计算TF-IDF值
+    float CalculateTFIDF(string document, string inputText)
+    {
+        // 将语音识别结果和用户输入的文字转换为词列表
+        string[] docWords = document.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] inputWords = inputText.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+        List<string[]> documents = new List<string[]> { docWords, inputWords };
+
+        // 计算TF-IDF值
+        float tfidfSum = 0f;
+        foreach (string word in inputWords)
+        {
+            float tf = CalculateTF(docWords, word);
+            float idf = CalculateIDF(documents, word);
+            float tfidf = tf * idf;
+            tfidfSum += tfidf;
+        }
+        return tfidfSum;
+    }
+    */
+
+    // 计算余弦相似度
+    float CalculateCosineSimilarity(string text1, string text2)
+    {
+        string[] words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+        Dictionary<string, int> vector1 = new Dictionary<string, int>();
+        Dictionary<string, int> vector2 = new Dictionary<string, int>();
+
+        // 统计词频
+        foreach (string word in words1)
+        {
+            if (vector1.ContainsKey(word))
+            {
+                vector1[word]++;
+            }
+            else
+            {
+                vector1[word] = 1;
+            }
+        }
+
+        foreach (string word in words2)
+        {
+            if (vector2.ContainsKey(word))
+            {
+                vector2[word]++;
+            }
+            else
+            {
+                vector2[word] = 1;
+            }
+        }
+
+        // 计算余弦相似度
+        double dotProduct = 0.0;
+        double magnitude1 = 0.0;
+        double magnitude2 = 0.0;
+
+        foreach (var kvp in vector1)
+        {
+            string word = kvp.Key;
+            int count1 = kvp.Value;
+            magnitude1 += Math.Pow(count1, 2);
+            if (vector2.ContainsKey(word))
+            {
+                dotProduct += count1 * vector2[word];
+            }
+        }
+
+        foreach (var kvp in vector2)
+        {
+            int count2 = kvp.Value;
+            magnitude2 += Math.Pow(count2, 2);
+        }
+
+        magnitude1 = Math.Sqrt(magnitude1);
+        magnitude2 = Math.Sqrt(magnitude2);
+
+        if (magnitude1 == 0 || magnitude2 == 0)
+        {
+            return 0;
+        }
+
+        cosResult = (float)(dotProduct / (magnitude1 * magnitude2));
+        if (cosResult < 0.3)
+        {
+            EditPage.instance.VoiceInteractionCanvas.SetActive(false);
+            EventLinkContentManager.Instance.nextEvent();
+        }
+        //EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex].cosResult = cosResult;
+        return cosResult;
+    }
+
 }
 

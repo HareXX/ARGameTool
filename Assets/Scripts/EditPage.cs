@@ -7,6 +7,13 @@ public class EditPage : MonoBehaviour
     public static EditPage instance;
     public GameObject Content;
     public GameObject PrefabFile;
+    public List<GameObject> ToHide;
+    public GameObject PlaymodeManager;
+    public GameObject ButtonContinue;
+
+    public GameObject VoiceInteractionCanvas;
+    public GameObject GestureInteractionCanvas;
+
     private void Awake()
     {
         instance = this;
