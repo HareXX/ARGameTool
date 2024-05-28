@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EventUnit : MonoBehaviour
 {
+    
     public int m_ObjectType = -1;
 
     /// <summary>

@@ -1,3 +1,356 @@
+////using System.Collections;
+////using System.Collections.Generic;
+////using System.Text.RegularExpressions;
+////using UnityEngine;
+////using UnityEngine.UI;
+////using UnityEngine.Networking;
+////using System;
+////using TMPro;
+
+////public class SpeechScript : MonoBehaviour
+////{
+////    public static SpeechScript Instance;
+////    public float cosResult;
+////    public GameObject[] voiceToHide;
+
+////    private void Awake()
+////    {
+////        Instance = this;
+////    }
+////    public string api_key = "ZO7xgi0yOSQ9BEEQXWDPSK3s";
+////    public string secret_Key = "sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB";
+////    string accessToken = string.Empty;
+
+////    public string inputText = "Ö¥ï¿½é¿ªï¿½ï¿½";
+
+////    //bool ishaveMic = false; //ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½
+////    string currentDeviceName = string.Empty; //ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½(Ä¬ï¿½ï¿½)
+////    int recordFrequency = 8000; //Â¼ï¿½ï¿½Æµï¿½ï¿½
+////    int recordMaxTime = 20;//ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½
+////    AudioClip saveAudioClip;//ï¿½æ´¢ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½
+////    AudioSource source;
+
+////    string resulrStr;//ï¿½æ´¢Ê¶ï¿½ï¿½ï¿½ï¿½
+////    TextMeshProUGUI resultText;//ï¿½ï¿½Ê¾Ê¶ï¿½ï¿½ï¿½ï¿½
+////    Button startBtn;//ï¿½ï¿½Ê¼Ê¶ï¿½ï¿½Å¥
+////    Button endBtn;//ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Å¥
+
+////    void Start()
+////    {
+////        saveAudioClip = transform.GetComponent<AudioClip>();
+////        source = transform.GetComponent<AudioSource>();
+////        GameObject.Find("Result").SetActive(true);
+////        resultText = GameObject.Find("Result").GetComponent<TextMeshProUGUI>();
+////        if (resultText == null)
+////        {
+////            // ï¿½ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+////            Debug.LogError("Result GameObject not found!");
+////        }
+
+////        GameObject.Find("Start").SetActive(true);
+////        startBtn = GameObject.Find("Start").GetComponent<Button>();
+////        GameObject.Find("End").SetActive(true);
+////        endBtn = GameObject.Find("End").GetComponent<Button>();
+
+////        StartCoroutine(_GetAccessToken());//ï¿½ï¿½È¡accessToken
+
+////        startBtn.onClick.AddListener(StartRecord);
+////        endBtn.onClick.AddListener(EndRecord);
+
+////        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Ãµï¿½Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
+////        string[] devices = Microphone.devices;
+
+////        foreach (string device in devices)
+////        {
+////            Debug.Log("Available Microphone Device: " + device);
+////        }
+
+////        if (source == null)
+////        {
+////            Debug.LogError("AudioSource component not found!");
+////        }
+////        else
+////        {
+////            Debug.Log("AudioSource component found!");
+////        }
+////    }
+
+
+////    /// <summary>
+////    /// ï¿½ï¿½Ê¼Â¼ï¿½ï¿½
+////    /// </summary>
+////    void StartRecord()
+////    {
+////        string[] devices = Microphone.devices;
+////        if (devices.Length > 0)
+////        {
+////            string currentDeviceName = devices[0];
+////            Debug.Log("Available Microphone Device: " + currentDeviceName);
+////        }
+////        else
+////        {
+////            Debug.LogError("No microphone devices available!");
+////        }
+////        saveAudioClip = Microphone.Start(currentDeviceName, false, recordMaxTime, recordFrequency);
+////        Debug.Log("ï¿½ï¿½Ê¼Ö´ï¿½ï¿½");
+////    }
+
+////    /// <summary>
+////    /// ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+////    /// </summary>
+////    void EndRecord()
+////    {
+////        Microphone.End(currentDeviceName);
+////        if (saveAudioClip != null)
+////        {
+////            source.PlayOneShot(saveAudioClip);
+////            StartCoroutine(DelayedRequestASR());
+////        }
+////        else
+////        {
+////            Debug.LogError("saveAudioClip is null.");
+////        }
+
+////        Debug.Log("ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½");
+////    }
+
+////    IEnumerator DelayedRequestASR()
+////    {
+////        // ï¿½È´ï¿½Ò»Ö¡
+////        yield return null;
+
+////        StartCoroutine(RequestASR());
+////    }
+
+////    /// <summary>
+////    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
+////    /// </summary>
+////    /// <returns></returns>
+////    IEnumerator RequestASR()
+////    {
+////        if (string.IsNullOrEmpty(accessToken))
+////        {
+////            yield return _GetAccessToken();
+////        }
+////        //resulrStr = string.Empty;
+////        resulrStr = "Wating....";
+////        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªPCM16
+////        float[] samples = new float[recordFrequency * 10 * saveAudioClip.channels];
+////        saveAudioClip.GetData(samples, 0);
+////        var samplesShort = new short[samples.Length];
+////        for (var index = 0; index < samples.Length; index++)
+////        {
+////            samplesShort[index] = (short)(samples[index] * short.MaxValue);
+////        }
+////        byte[] datas = new byte[samplesShort.Length * 2];
+////        Buffer.BlockCopy(samplesShort, 0, datas, 0, datas.Length);
+
+////        string url = string.Format("{0}?cuid={1}&token={2}", "https://vop.baidu.com/server_api", SystemInfo.deviceUniqueIdentifier, accessToken);
+
+////        WWWForm wwwForm = new WWWForm();
+////        wwwForm.AddBinaryData("audio", datas);
+
+////        UnityWebRequest unityWebRequest = UnityWebRequest.Post(url, wwwForm);
+
+////        unityWebRequest.SetRequestHeader("Content-Type", "audio/pcm;rate=" + recordFrequency);
+
+////        yield return unityWebRequest.SendWebRequest();
+
+////        if (string.IsNullOrEmpty(unityWebRequest.error))
+////        {
+////            resulrStr = unityWebRequest.downloadHandler.text;
+////            if (Regex.IsMatch(resulrStr, @"err_msg.:.success"))
+////            {
+////                Match match = Regex.Match(resulrStr, "result.:..(.*?)..]");
+////                if (match.Success)
+////                {
+////                    resulrStr = match.Groups[1].ToString();
+////                    Debug.Log(resulrStr);
+////                    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
+////                    //float tfIdfValue = CalculateTFIDF(resulrStr, inputText);
+
+////                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+////                    float cosineSimilarity = CalculateCosineSimilarity(resulrStr, inputText);
+
+////                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+////                    //Debug.Log("TF-IDFÖµï¿½ï¿½" + tfIdfValue);
+////                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶È£ï¿½" + cosineSimilarity);
+
+////                    // ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾
+////                    resulrStr = resulrStr + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶È£ï¿½" + cosineSimilarity;
+////                    if (cosineSimilarity == 1)
+////                    {
+////                        resulrStr = resulrStr + "Æ¥ï¿½ï¿½É¹ï¿½ï¿½ï¿½";
+////                    }
+////                    Debug.Log(resulrStr);
+////                }
+////            }
+////            else
+////            {
+////                resulrStr = "Ê¶ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½";
+////            }
+////            resultText.text = resulrStr;
+////        }
+////    }
+
+////    /// <summary>
+////    /// ï¿½ï¿½È¡accessTokenï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+////    /// </summary>
+////    /// <returns></returns>
+////    IEnumerator _GetAccessToken()
+////    {
+////        var uri =
+////            string.Format(
+////                "https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id={0}&client_secret={1}",
+////                api_key, secret_Key);
+////        UnityWebRequest unityWebRequest = UnityWebRequest.Get(uri);
+////        yield return unityWebRequest.SendWebRequest();
+////        if (unityWebRequest.isDone)
+////        {
+////            Match match = Regex.Match(unityWebRequest.downloadHandler.text, @"access_token.:.(.*?).,");
+////            if (match.Success)
+////            {
+////                Debug.Log("Tokenï¿½Ñ¾ï¿½Æ¥ï¿½ï¿½");
+////                accessToken = match.Groups[1].ToString();
+////            }
+////            else
+////            {
+////                Debug.Log("ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½È¡AccessTokenÊ§ï¿½ï¿½!!!");
+////            }
+////        }
+////    }
+
+////    /*
+////    // ï¿½ï¿½ï¿½ï¿½TFÖµ
+////    float CalculateTF(string[] words, string word)
+////    {
+////        int count = 0;
+////        foreach (string w in words)
+////        {
+////            if (w.Equals(word, StringComparison.OrdinalIgnoreCase))
+////            {
+////                count++;
+////            }
+////        }
+////        return (float)count / words.Length;
+////    }
+
+////    // ï¿½ï¿½ï¿½ï¿½IDFÖµ
+////    float CalculateIDF(List<string[]> documents, string word)
+////    {
+////        int count = 0;
+////        foreach (string[] doc in documents)
+////        {
+////            foreach (string w in doc)
+////            {
+////                if (w.Equals(word, StringComparison.OrdinalIgnoreCase))
+////                {
+////                    count++;
+////                    break;
+////                }
+////            }
+////        }
+////        return Mathf.Log(documents.Count / (float)(count + 1));
+////    }
+
+////    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
+////    float CalculateTFIDF(string document, string inputText)
+////    {
+////        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½Ð±ï¿½
+////        string[] docWords = document.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+////        string[] inputWords = inputText.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+////        List<string[]> documents = new List<string[]> { docWords, inputWords };
+
+////        // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
+////        float tfidfSum = 0f;
+////        foreach (string word in inputWords)
+////        {
+////            float tf = CalculateTF(docWords, word);
+////            float idf = CalculateIDF(documents, word);
+////            float tfidf = tf * idf;
+////            tfidfSum += tfidf;
+////        }
+////        return tfidfSum;
+////    }
+////    */
+
+////    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+////    float CalculateCosineSimilarity(string text1, string text2)
+////    {
+////        string[] words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+////        string[] words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+////        Dictionary<string, int> vector1 = new Dictionary<string, int>();
+////        Dictionary<string, int> vector2 = new Dictionary<string, int>();
+
+////        // Í³ï¿½Æ´ï¿½Æµ
+////        foreach (string word in words1)
+////        {
+////            if (vector1.ContainsKey(word))
+////            {
+////                vector1[word]++;
+////            }
+////            else
+////            {
+////                vector1[word] = 1;
+////            }
+////        }
+
+////        foreach (string word in words2)
+////        {
+////            if (vector2.ContainsKey(word))
+////            {
+////                vector2[word]++;
+////            }
+////            else
+////            {
+////                vector2[word] = 1;
+////            }
+////        }
+
+////        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+////        double dotProduct = 0.0;
+////        double magnitude1 = 0.0;
+////        double magnitude2 = 0.0;
+
+////        foreach (var kvp in vector1)
+////        {
+////            string word = kvp.Key;
+////            int count1 = kvp.Value;
+////            magnitude1 += Math.Pow(count1, 2);
+////            if (vector2.ContainsKey(word))
+////            {
+////                dotProduct += count1 * vector2[word];
+////            }
+////        }
+
+////        foreach (var kvp in vector2)
+////        {
+////            int count2 = kvp.Value;
+////            magnitude2 += Math.Pow(count2, 2);
+////        }
+
+////        magnitude1 = Math.Sqrt(magnitude1);
+////        magnitude2 = Math.Sqrt(magnitude2);
+
+////        if (magnitude1 == 0 || magnitude2 == 0)
+////        {
+////            return 0;
+////        }
+
+////        cosResult = (float)(dotProduct / (magnitude1 * magnitude2));
+////        if (cosResult < 0.3)
+////        {
+////            EditPage.instance.VoiceInteractionCanvas.SetActive(false);
+////            EventLinkContentManager.Instance.nextEvent();
+////        }
+////        //EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex].cosResult = cosResult;
+////        return cosResult;
+////    }
+
+////}
+
 //using System.Collections;
 //using System.Collections.Generic;
 //using System.Text.RegularExpressions;
@@ -10,30 +363,31 @@
 //public class SpeechScript : MonoBehaviour
 //{
 //    public static SpeechScript Instance;
-//    public float cosResult;
-//    public GameObject[] voiceToHide;
 
 //    private void Awake()
 //    {
 //        Instance = this;
 //    }
+
 //    public string api_key = "ZO7xgi0yOSQ9BEEQXWDPSK3s";
 //    public string secret_Key = "sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB";
 //    string accessToken = string.Empty;
+//    public float cosResult;
 
-//    public string inputText = "Ö¥Âé¿ªÃÅ";
+//    public string inputText;
 
-//    //bool ishaveMic = false; //¼ì²âÊÇ·ñÁ¬½ÓÂó¿Ë·ç
-//    string currentDeviceName = string.Empty; //µ±Ç°Â¼ÒôÉè±¸Ãû³Æ(Ä¬ÈÏ)
-//    int recordFrequency = 8000; //Â¼ÒôÆµÂÊ
-//    int recordMaxTime = 20;//×î´óÂ¼ÒôÊ±³¤
-//    AudioClip saveAudioClip;//´æ´¢µ±Ç°Â¼ÒôµÄÆ¬¶Î
+//    //bool ishaveMic = false; //ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½
+//    string currentDeviceName = string.Empty; //ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½(Ä¬ï¿½ï¿½)
+//    int recordFrequency = 8000; //Â¼ï¿½ï¿½Æµï¿½ï¿½
+//    int recordMaxTime = 20;//ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½
+//    AudioClip saveAudioClip;//ï¿½æ´¢ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½
 //    AudioSource source;
 
-//    string resulrStr;//´æ´¢Ê¶±ð½á¹û
-//    TextMeshProUGUI resultText;//ÏÔÊ¾Ê¶±ð½á¹û
-//    Button startBtn;//¿ªÊ¼Ê¶±ð°´Å¥
-//    Button endBtn;//½áÊøÊ¶±ð°´Å¥
+//    string resulrStr;//ï¿½æ´¢Ê¶ï¿½ï¿½ï¿½ï¿½
+//    TextMeshProUGUI resultText;//ï¿½ï¿½Ê¾Ê¶ï¿½ï¿½ï¿½ï¿½
+//    Button startBtn;//ï¿½ï¿½Ê¼Ê¶ï¿½ï¿½Å¥
+//    Button endBtn;//ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Å¥
+
 
 //    void Start()
 //    {
@@ -43,7 +397,7 @@
 //        resultText = GameObject.Find("Result").GetComponent<TextMeshProUGUI>();
 //        if (resultText == null)
 //        {
-//            // Èç¹ûÎ´ÕÒµ½¶ÔÏó£¬ÔòÊä³ö´íÎóÏûÏ¢
+//            // ï¿½ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 //            Debug.LogError("Result GameObject not found!");
 //        }
 
@@ -52,12 +406,12 @@
 //        GameObject.Find("End").SetActive(true);
 //        endBtn = GameObject.Find("End").GetComponent<Button>();
 
-//        StartCoroutine(_GetAccessToken());//»ñÈ¡accessToken
+//        StartCoroutine(_GetAccessToken());//ï¿½ï¿½È¡accessToken
 
 //        startBtn.onClick.AddListener(StartRecord);
 //        endBtn.onClick.AddListener(EndRecord);
 
-//        // Êä³öËùÓÐ¿ÉÓÃµÄÂ¼ÒôÉè±¸Ãû³Æ
+//        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Ãµï¿½Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
 //        string[] devices = Microphone.devices;
 
 //        foreach (string device in devices)
@@ -77,7 +431,7 @@
 
 
 //    /// <summary>
-//    /// ¿ªÊ¼Â¼Òô
+//    /// ï¿½ï¿½Ê¼Â¼ï¿½ï¿½
 //    /// </summary>
 //    void StartRecord()
 //    {
@@ -92,11 +446,11 @@
 //            Debug.LogError("No microphone devices available!");
 //        }
 //        saveAudioClip = Microphone.Start(currentDeviceName, false, recordMaxTime, recordFrequency);
-//        Debug.Log("¿ªÊ¼Ö´ÐÐ");
+//        Debug.Log("ï¿½ï¿½Ê¼Ö´ï¿½ï¿½");
 //    }
 
 //    /// <summary>
-//    /// ½áÊøÂ¼Òô
+//    /// ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
 //    /// </summary>
 //    void EndRecord()
 //    {
@@ -111,19 +465,19 @@
 //            Debug.LogError("saveAudioClip is null.");
 //        }
 
-//        Debug.Log("½áÊøÖ´ÐÐ");
+//        Debug.Log("ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½");
 //    }
 
 //    IEnumerator DelayedRequestASR()
 //    {
-//        // µÈ´ýÒ»Ö¡
+//        // ï¿½È´ï¿½Ò»Ö¡
 //        yield return null;
 
 //        StartCoroutine(RequestASR());
 //    }
 
 //    /// <summary>
-//    /// ÇëÇóÓïÒôÊ¶±ð
+//    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
 //    /// </summary>
 //    /// <returns></returns>
 //    IEnumerator RequestASR()
@@ -134,7 +488,7 @@
 //        }
 //        //resulrStr = string.Empty;
 //        resulrStr = "Wating....";
-//        //´¦Àíµ±Ç°Â¼ÒôÊý¾ÝÎªPCM16
+//        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªPCM16
 //        float[] samples = new float[recordFrequency * 10 * saveAudioClip.channels];
 //        saveAudioClip.GetData(samples, 0);
 //        var samplesShort = new short[samples.Length];
@@ -166,35 +520,35 @@
 //                {
 //                    resulrStr = match.Groups[1].ToString();
 //                    Debug.Log(resulrStr);
-//                    // ¼ÆËãTF-IDFÖµ
+//                    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
 //                    //float tfIdfValue = CalculateTFIDF(resulrStr, inputText);
 
-//                    // ¼ÆËãÓàÏÒÏàËÆ¶È
+//                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
 //                    float cosineSimilarity = CalculateCosineSimilarity(resulrStr, inputText);
 
-//                    // Êä³öÏàËÆ¶È
-//                    //Debug.Log("TF-IDFÖµ£º" + tfIdfValue);
-//                    Debug.Log("ÓàÏÒÏàËÆ¶È£º" + cosineSimilarity);
+//                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+//                    //Debug.Log("TF-IDFÖµï¿½ï¿½" + tfIdfValue);
+//                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶È£ï¿½" + cosineSimilarity);
 
-//                    // ¸üÐÂUIÏÔÊ¾
-//                    resulrStr = resulrStr + "ÓàÏÒÏàËÆ¶È£º" + cosineSimilarity;
-//                    if (cosineSimilarity == 1)
+//                    // ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾
+//                    resulrStr = resulrStr + "\nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶È£ï¿½" + cosineSimilarity;
+//                    if (cosineSimilarity >= 0.5)
 //                    {
-//                        resulrStr = resulrStr + "Æ¥Åä³É¹¦£¡";
+//                        resulrStr = resulrStr + "\nÆ¥ï¿½ï¿½É¹ï¿½ï¿½ï¿½";
 //                    }
 //                    Debug.Log(resulrStr);
 //                }
 //            }
 //            else
 //            {
-//                resulrStr = "Ê¶±ð½á¹ûÎª¿Õ";
+//                resulrStr = "Ê¶ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½";
 //            }
 //            resultText.text = resulrStr;
 //        }
 //    }
 
 //    /// <summary>
-//    /// »ñÈ¡accessTokenÇëÇóÁîÅÆ
+//    /// ï¿½ï¿½È¡accessTokenï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //    /// </summary>
 //    /// <returns></returns>
 //    IEnumerator _GetAccessToken()
@@ -210,18 +564,18 @@
 //            Match match = Regex.Match(unityWebRequest.downloadHandler.text, @"access_token.:.(.*?).,");
 //            if (match.Success)
 //            {
-//                Debug.Log("TokenÒÑ¾­Æ¥Åä");
+//                Debug.Log("Tokenï¿½Ñ¾ï¿½Æ¥ï¿½ï¿½");
 //                accessToken = match.Groups[1].ToString();
 //            }
 //            else
 //            {
-//                Debug.Log("ÑéÖ¤´íÎó,»ñÈ¡AccessTokenÊ§°Ü!!!");
+//                Debug.Log("ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½È¡AccessTokenÊ§ï¿½ï¿½!!!");
 //            }
 //        }
 //    }
 
 //    /*
-//    // ¼ÆËãTFÖµ
+//    // ï¿½ï¿½ï¿½ï¿½TFÖµ
 //    float CalculateTF(string[] words, string word)
 //    {
 //        int count = 0;
@@ -235,7 +589,7 @@
 //        return (float)count / words.Length;
 //    }
 
-//    // ¼ÆËãIDFÖµ
+//    // ï¿½ï¿½ï¿½ï¿½IDFÖµ
 //    float CalculateIDF(List<string[]> documents, string word)
 //    {
 //        int count = 0;
@@ -253,16 +607,16 @@
 //        return Mathf.Log(documents.Count / (float)(count + 1));
 //    }
 
-//    // ¼ÆËãTF-IDFÖµ
+//    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
 //    float CalculateTFIDF(string document, string inputText)
 //    {
-//        // ½«ÓïÒôÊ¶±ð½á¹ûºÍÓÃ»§ÊäÈëµÄÎÄ×Ö×ª»»Îª´ÊÁÐ±í
+//        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½Ð±ï¿½
 //        string[] docWords = document.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
 //        string[] inputWords = inputText.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
 
 //        List<string[]> documents = new List<string[]> { docWords, inputWords };
 
-//        // ¼ÆËãTF-IDFÖµ
+//        // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
 //        float tfidfSum = 0f;
 //        foreach (string word in inputWords)
 //        {
@@ -275,17 +629,17 @@
 //    }
 //    */
 
-//    // ¼ÆËãÓàÏÒÏàËÆ¶È
-//    float CalculateCosineSimilarity(string text1, string text2)
+//    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+//    public float CalculateCosineSimilarity(string text1, string text2)
 //    {
-//        string[] words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-//        string[] words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+//        var words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+//        var words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
 
-//        Dictionary<string, int> vector1 = new Dictionary<string, int>();
-//        Dictionary<string, int> vector2 = new Dictionary<string, int>();
+//        var vector1 = new Dictionary<string, int>();
+//        var vector2 = new Dictionary<string, int>();
 
-//        // Í³¼Æ´ÊÆµ
-//        foreach (string word in words1)
+//        // Í³ï¿½Æ´ï¿½Æµ
+//        foreach (var word in words1)
 //        {
 //            if (vector1.ContainsKey(word))
 //            {
@@ -297,7 +651,7 @@
 //            }
 //        }
 
-//        foreach (string word in words2)
+//        foreach (var word in words2)
 //        {
 //            if (vector2.ContainsKey(word))
 //            {
@@ -309,25 +663,21 @@
 //            }
 //        }
 
-//        // ¼ÆËãÓàÏÒÏàËÆ¶È
+//        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
 //        double dotProduct = 0.0;
 //        double magnitude1 = 0.0;
 //        double magnitude2 = 0.0;
 
-//        foreach (var kvp in vector1)
-//        {
-//            string word = kvp.Key;
-//            int count1 = kvp.Value;
-//            magnitude1 += Math.Pow(count1, 2);
-//            if (vector2.ContainsKey(word))
-//            {
-//                dotProduct += count1 * vector2[word];
-//            }
-//        }
+//        var allWords = new HashSet<string>(vector1.Keys);
+//        allWords.UnionWith(vector2.Keys);
 
-//        foreach (var kvp in vector2)
+//        foreach (var word in allWords)
 //        {
-//            int count2 = kvp.Value;
+//            int count1 = vector1.ContainsKey(word) ? vector1[word] : 0;
+//            int count2 = vector2.ContainsKey(word) ? vector2[word] : 0;
+
+//            dotProduct += count1 * count2;
+//            magnitude1 += Math.Pow(count1, 2);
 //            magnitude2 += Math.Pow(count2, 2);
 //        }
 
@@ -345,7 +695,7 @@
 //            EditPage.instance.VoiceInteractionCanvas.SetActive(false);
 //            EventLinkContentManager.Instance.nextEvent();
 //        }
-//        //EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex].cosResult = cosResult;
+
 //        return cosResult;
 //    }
 
@@ -372,21 +722,20 @@ public class SpeechScript : MonoBehaviour
     public string api_key = "ZO7xgi0yOSQ9BEEQXWDPSK3s";
     public string secret_Key = "sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB";
     string accessToken = string.Empty;
-    public float cosResult;
 
-    public string inputText;
+    public string inputText = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 
-    //bool ishaveMic = false; //¼ì²âÊÇ·ñÁ¬½ÓÂó¿Ë·ç
-    string currentDeviceName = string.Empty; //µ±Ç°Â¼ÒôÉè±¸Ãû³Æ(Ä¬ÈÏ)
-    int recordFrequency = 8000; //Â¼ÒôÆµÂÊ
-    int recordMaxTime = 20;//×î´óÂ¼ÒôÊ±³¤
-    AudioClip saveAudioClip;//´æ´¢µ±Ç°Â¼ÒôµÄÆ¬¶Î
+    //bool ishaveMic = false; //ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½
+    string currentDeviceName = string.Empty; //ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½(Ä¬ï¿½ï¿½)
+    int recordFrequency = 8000; //Â¼ï¿½ï¿½Æµï¿½ï¿½
+    int recordMaxTime = 20;//ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê±ï¿½ï¿½
+    AudioClip saveAudioClip;//ï¿½æ´¢ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½
     AudioSource source;
 
-    string resulrStr;//´æ´¢Ê¶±ð½á¹û
-    TextMeshProUGUI resultText;//ÏÔÊ¾Ê¶±ð½á¹û
-    Button startBtn;//¿ªÊ¼Ê¶±ð°´Å¥
-    Button endBtn;//½áÊøÊ¶±ð°´Å¥
+    string resulrStr;//ï¿½æ´¢Ê¶ï¿½ï¿½ï¿½ï¿½
+    TextMeshProUGUI resultText;//ï¿½ï¿½Ê¾Ê¶ï¿½ï¿½ï¿½ï¿½
+    Button startBtn;//ï¿½ï¿½Ê¼Ê¶ï¿½ï¿½Å¥
+    Button endBtn;//ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Å¥
 
 
     void Start()
@@ -397,7 +746,7 @@ public class SpeechScript : MonoBehaviour
         resultText = GameObject.Find("Result").GetComponent<TextMeshProUGUI>();
         if (resultText == null)
         {
-            // Èç¹ûÎ´ÕÒµ½¶ÔÏó£¬ÔòÊä³ö´íÎóÏûÏ¢
+            // ï¿½ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
             Debug.LogError("Result GameObject not found!");
         }
 
@@ -406,12 +755,12 @@ public class SpeechScript : MonoBehaviour
         GameObject.Find("End").SetActive(true);
         endBtn = GameObject.Find("End").GetComponent<Button>();
 
-        StartCoroutine(_GetAccessToken());//»ñÈ¡accessToken
+        StartCoroutine(_GetAccessToken());//ï¿½ï¿½È¡accessToken
 
         startBtn.onClick.AddListener(StartRecord);
         endBtn.onClick.AddListener(EndRecord);
 
-        // Êä³öËùÓÐ¿ÉÓÃµÄÂ¼ÒôÉè±¸Ãû³Æ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Ãµï¿½Â¼ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
         string[] devices = Microphone.devices;
 
         foreach (string device in devices)
@@ -431,7 +780,7 @@ public class SpeechScript : MonoBehaviour
 
 
     /// <summary>
-    /// ¿ªÊ¼Â¼Òô
+    /// ï¿½ï¿½Ê¼Â¼ï¿½ï¿½
     /// </summary>
     void StartRecord()
     {
@@ -446,11 +795,11 @@ public class SpeechScript : MonoBehaviour
             Debug.LogError("No microphone devices available!");
         }
         saveAudioClip = Microphone.Start(currentDeviceName, false, recordMaxTime, recordFrequency);
-        Debug.Log("¿ªÊ¼Ö´ÐÐ");
+        Debug.Log("ï¿½ï¿½Ê¼Ö´ï¿½ï¿½");
     }
 
     /// <summary>
-    /// ½áÊøÂ¼Òô
+    /// ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
     /// </summary>
     void EndRecord()
     {
@@ -465,19 +814,19 @@ public class SpeechScript : MonoBehaviour
             Debug.LogError("saveAudioClip is null.");
         }
 
-        Debug.Log("½áÊøÖ´ÐÐ");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½");
     }
 
     IEnumerator DelayedRequestASR()
     {
-        // µÈ´ýÒ»Ö¡
+        // ï¿½È´ï¿½Ò»Ö¡
         yield return null;
 
         StartCoroutine(RequestASR());
     }
 
     /// <summary>
-    /// ÇëÇóÓïÒôÊ¶±ð
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
     /// </summary>
     /// <returns></returns>
     IEnumerator RequestASR()
@@ -488,7 +837,7 @@ public class SpeechScript : MonoBehaviour
         }
         //resulrStr = string.Empty;
         resulrStr = "Wating....";
-        //´¦Àíµ±Ç°Â¼ÒôÊý¾ÝÎªPCM16
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªPCM16
         float[] samples = new float[recordFrequency * 10 * saveAudioClip.channels];
         saveAudioClip.GetData(samples, 0);
         var samplesShort = new short[samples.Length];
@@ -520,35 +869,43 @@ public class SpeechScript : MonoBehaviour
                 {
                     resulrStr = match.Groups[1].ToString();
                     Debug.Log(resulrStr);
-                    // ¼ÆËãTF-IDFÖµ
+                    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
                     //float tfIdfValue = CalculateTFIDF(resulrStr, inputText);
 
-                    // ¼ÆËãÓàÏÒÏàËÆ¶È
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
                     float cosineSimilarity = CalculateCosineSimilarity(resulrStr, inputText);
 
-                    // Êä³öÏàËÆ¶È
-                    //Debug.Log("TF-IDFÖµ£º" + tfIdfValue);
-                    Debug.Log("ÓàÏÒÏàËÆ¶È£º" + cosineSimilarity);
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+                    //Debug.Log("TF-IDFÖµï¿½ï¿½" + tfIdfValue);
+                    Debug.Log("cos" + cosineSimilarity);
 
-                    // ¸üÐÂUIÏÔÊ¾
-                    resulrStr = resulrStr + "\nÓàÏÒÏàËÆ¶È£º" + cosineSimilarity;
-                    if (cosineSimilarity >= 0.5)
+                    // ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾
+                    //resulrStr = resulrStr + "\nä½™å¼¦ç›¸ä¼¼åº¦" + cosineSimilarity;
+                    if (resulrStr==inputText)
+                    //if (cosineSimilarity >= 0.5)
                     {
-                        resulrStr = resulrStr + "\nÆ¥Åä³É¹¦£¡";
+                        EventLinkContentManager.Instance.nextEvent();
+                        resulrStr = resulrStr + "\nsuccess";
+                    }
+                    else
+                    {
+                        Debug.Log(inputText);
+                        Debug.Log(resulrStr);
+                        resulrStr = "not valid";
                     }
                     Debug.Log(resulrStr);
                 }
             }
             else
             {
-                resulrStr = "Ê¶±ð½á¹ûÎª¿Õ";
+                resulrStr = "null";
             }
             resultText.text = resulrStr;
         }
     }
 
     /// <summary>
-    /// »ñÈ¡accessTokenÇëÇóÁîÅÆ
+    /// ï¿½ï¿½È¡accessTokenï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <returns></returns>
     IEnumerator _GetAccessToken()
@@ -564,18 +921,18 @@ public class SpeechScript : MonoBehaviour
             Match match = Regex.Match(unityWebRequest.downloadHandler.text, @"access_token.:.(.*?).,");
             if (match.Success)
             {
-                Debug.Log("TokenÒÑ¾­Æ¥Åä");
+                Debug.Log("Tokenï¿½Ñ¾ï¿½Æ¥ï¿½ï¿½");
                 accessToken = match.Groups[1].ToString();
             }
             else
             {
-                Debug.Log("ÑéÖ¤´íÎó,»ñÈ¡AccessTokenÊ§°Ü!!!");
+                Debug.Log("ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½È¡AccessTokenÊ§ï¿½ï¿½!!!");
             }
         }
     }
 
     /*
-    // ¼ÆËãTFÖµ
+    // ï¿½ï¿½ï¿½ï¿½TFÖµ
     float CalculateTF(string[] words, string word)
     {
         int count = 0;
@@ -589,7 +946,7 @@ public class SpeechScript : MonoBehaviour
         return (float)count / words.Length;
     }
 
-    // ¼ÆËãIDFÖµ
+    // ï¿½ï¿½ï¿½ï¿½IDFÖµ
     float CalculateIDF(List<string[]> documents, string word)
     {
         int count = 0;
@@ -607,16 +964,16 @@ public class SpeechScript : MonoBehaviour
         return Mathf.Log(documents.Count / (float)(count + 1));
     }
 
-    // ¼ÆËãTF-IDFÖµ
+    // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
     float CalculateTFIDF(string document, string inputText)
     {
-        // ½«ÓïÒôÊ¶±ð½á¹ûºÍÓÃ»§ÊäÈëµÄÎÄ×Ö×ª»»Îª´ÊÁÐ±í
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½Ð±ï¿½
         string[] docWords = document.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
         string[] inputWords = inputText.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
 
         List<string[]> documents = new List<string[]> { docWords, inputWords };
 
-        // ¼ÆËãTF-IDFÖµ
+        // ï¿½ï¿½ï¿½ï¿½TF-IDFÖµ
         float tfidfSum = 0f;
         foreach (string word in inputWords)
         {
@@ -629,16 +986,17 @@ public class SpeechScript : MonoBehaviour
     }
     */
 
-    // ¼ÆËãÓàÏÒÏàËÆ¶È
-    public float CalculateCosineSimilarity(string text1, string text2)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+    public static float CalculateCosineSimilarity(string text1, string text2)
     {
-        var words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-        var words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+       
+        var words1 = text1.Split(new char[] { ' ', ',', '.', '!', '?', 'çš„', 'æ˜¯' }, StringSplitOptions.RemoveEmptyEntries);
+        var words2 = text2.Split(new char[] { ' ', ',', '.', '!', '?', 'çš„', 'æ˜¯' }, StringSplitOptions.RemoveEmptyEntries);
 
         var vector1 = new Dictionary<string, int>();
         var vector2 = new Dictionary<string, int>();
 
-        // Í³¼Æ´ÊÆµ
+        // Í³ï¿½Æ´ï¿½Æµ
         foreach (var word in words1)
         {
             if (vector1.ContainsKey(word))
@@ -663,7 +1021,11 @@ public class SpeechScript : MonoBehaviour
             }
         }
 
-        // ¼ÆËãÓàÏÒÏàËÆ¶È
+        // Debug ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
+        Debug.Log("Vector1: " + string.Join(", ", vector1));
+        Debug.Log("Vector2: " + string.Join(", ", vector2));
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         double dotProduct = 0.0;
         double magnitude1 = 0.0;
         double magnitude2 = 0.0;
@@ -684,20 +1046,20 @@ public class SpeechScript : MonoBehaviour
         magnitude1 = Math.Sqrt(magnitude1);
         magnitude2 = Math.Sqrt(magnitude2);
 
+        // Debug ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Öµ
+        Debug.Log("Dot Product: " + dotProduct);
+        Debug.Log("Magnitude1: " + magnitude1);
+        Debug.Log("Magnitude2: " + magnitude2);
+
         if (magnitude1 == 0 || magnitude2 == 0)
         {
             return 0;
         }
 
-        cosResult = (float)(dotProduct / (magnitude1 * magnitude2));
-        if (cosResult < 0.3)
-        {
-            EditPage.instance.VoiceInteractionCanvas.SetActive(false);
-            EventLinkContentManager.Instance.nextEvent();
-        }
-
-        return cosResult;
+        
+        return (float)(dotProduct / (magnitude1 * magnitude2));
     }
 
 }
+
 

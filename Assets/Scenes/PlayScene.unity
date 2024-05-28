@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028353, g: 0.22571383, b: 0.30692253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -3551968, y: 100}
+  m_AnchoredPosition: {x: -3596249.8, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -502,12 +502,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2307,7 +2307,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Waiting...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bff560e095f9cbe478adba56b035648c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c80c1f8eececd4f88a33d46af37371bb, type: 2}
   m_sharedMaterial: {fileID: 5540746959234400139, guid: bff560e095f9cbe478adba56b035648c,
     type: 2}
   m_fontSharedMaterials: []
@@ -5054,7 +5054,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   api_key: ZO7xgi0yOSQ9BEEQXWDPSK3s
   secret_Key: sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB
-  cosResult: 0
   inputText: "\u829D\u9EBB\u5F00\u95E8"
 --- !u!1 &390803287
 GameObject:
@@ -8902,7 +8901,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623899734}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -8917,8 +8916,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Enter text...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 817edd4911804e842a3925c309b4a30a, type: 2}
-  m_sharedMaterial: {fileID: 5540746959234400139, guid: 817edd4911804e842a3925c309b4a30a,
+  m_fontAsset: {fileID: 11400000, guid: c80c1f8eececd4f88a33d46af37371bb, type: 2}
+  m_sharedMaterial: {fileID: -5267540407206231864, guid: c80c1f8eececd4f88a33d46af37371bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -11791,12 +11790,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -15237,12 +15236,12 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: "\u8BF7\u6253\u5F00\u5B9D\u7BB1"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 817edd4911804e842a3925c309b4a30a, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: c80c1f8eececd4f88a33d46af37371bb, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
@@ -15558,10 +15557,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u200B"
+  m_text: "\u8BF7\u6253\u5F00\u5B9D\u7BB1\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bff560e095f9cbe478adba56b035648c, type: 2}
-  m_sharedMaterial: {fileID: 5540746959234400139, guid: bff560e095f9cbe478adba56b035648c,
+  m_fontAsset: {fileID: 11400000, guid: c80c1f8eececd4f88a33d46af37371bb, type: 2}
+  m_sharedMaterial: {fileID: -5267540407206231864, guid: c80c1f8eececd4f88a33d46af37371bb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -27844,12 +27843,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 0.9
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
