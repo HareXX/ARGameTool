@@ -16,9 +16,7 @@ public class GameStatusManager : MonoBehaviour
     {
         instance = this;
         isEditing = true;
-
     }
-
     public void ChangetoEditMode()
     {
         isEditing = true;
