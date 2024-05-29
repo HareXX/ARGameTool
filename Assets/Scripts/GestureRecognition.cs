@@ -10,6 +10,12 @@ using System.IO;
 
 public class GestureRecognition : MonoBehaviour
 {
+    public static GestureRecognition Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     public string apiKey = "WceuaOmtBTLYDNg4lXaDuR0b";
     public string secretKey = "dvRVsbKVrqzAIPWBzEvxz3Ps0oUQOCoR";
     private string accessToken;

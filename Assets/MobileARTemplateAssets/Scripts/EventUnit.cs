@@ -168,6 +168,8 @@ public class EventUnit : MonoBehaviour
             }
             if(gestureInteractionIndex == null)
             {
+                EditPage.instance.GestureInteractionCanvas.SetActive(true);
+//todo
                 return;
             }
             //TODO 交互相关操作
