@@ -861,6 +861,10 @@ public class SpeechScript : MonoBehaviour
 
         if (string.IsNullOrEmpty(unityWebRequest.error))
         {
+            Debug.Log("1111111111111111111111111111");
+            Debug.Log(inputText);
+            Debug.Log(resulrStr);
+
             resulrStr = unityWebRequest.downloadHandler.text;
             if (Regex.IsMatch(resulrStr, @"err_msg.:.success"))
             {
@@ -881,17 +885,21 @@ public class SpeechScript : MonoBehaviour
 
                     // ����UI��ʾ
                     //resulrStr = resulrStr + "\n余弦相似度" + cosineSimilarity;
-                    if (resulrStr==inputText)
+                    Debug.Log(inputText + "****");
+                   
+                    Debug.Log(resulrStr + "****");
+                    if (string.Equals(resulrStr, "关闭"))
                     //if (cosineSimilarity >= 0.5)
                     {
                         EventLinkContentManager.Instance.nextEvent();
-                        resulrStr = resulrStr + "\nsuccess";
+                        resulrStr = "口令正确!";
                     }
                     else
                     {
+                        Debug.Log("1111111111111111111111111111");
                         Debug.Log(inputText);
                         Debug.Log(resulrStr);
-                        resulrStr = "not valid";
+                        resulrStr = "好像不太对呢~";
                     }
                     Debug.Log(resulrStr);
                 }
