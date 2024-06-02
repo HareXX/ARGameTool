@@ -321,7 +321,7 @@ public class ARTemplateMenuManager : MonoBehaviour
                         m_EditButton.gameObject.SetActive(true);
                         m_PreviewButton.gameObject.SetActive(true);
                         m_DialogDeleteButton.gameObject.SetActive(true);
-                        m_SaveButton.gameObject.SetActive(true); 
+                        m_SaveButton.gameObject.SetActive(true);
                     }
                     else
                     {

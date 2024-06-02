@@ -4,15 +4,24 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using UnityEngine.XR.Interaction.Toolkit.Transformers;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class EventLinkContentManager : MonoBehaviour
 {
+    public static EventLinkContentManager Instance;
+
+    public XRInteractionGroup m_InteractionGroup;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public GameObject content;
 
     public ObjectSpawner ObjectSpawner;
 
-    public EventLink eventLink = new EventLink();
+    public EventLink eventLink;
 
     //具体事件按钮的List
     public List<GameObject> eventButtonList = new List<GameObject>();
@@ -43,6 +52,7 @@ public class EventLinkContentManager : MonoBehaviour
     //
     public GameObject animationManager;
 
+    //public GameObject interactionManager;
     //UI
     public GameObject UI;
 
@@ -56,6 +66,7 @@ public class EventLinkContentManager : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log("new eventlink");
         if (eventLink == null) eventLink = new EventLink();
         eventCount = 0;
     }
@@ -87,6 +98,12 @@ public class EventLinkContentManager : MonoBehaviour
         createButton.SetActive(false);
     }
 
+    public void ClearFocusObject()
+    {
+        FocusExitEventArgs args = new FocusExitEventArgs();
+        args.interactableObject = m_InteractionGroup.focusInteractable;
+        m_InteractionGroup.OnFocusExiting(args);
+    }
 
     /// <summary>
     /// 点击某个事件按钮
@@ -196,8 +213,9 @@ public class EventLinkContentManager : MonoBehaviour
         if (eventType == 0)
         {
             ObjectSpawner.stopSpawn = false;
-            UI.GetComponent<GoalManager>().StartCoaching();
             UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
+            UI.GetComponent<GoalManager>().StartCoaching();
+            //UI.transform.Find("Object Menu Animator").gameObject.SetActive(true);
             eventLink.editEvent(focusedEventIndex);
         }
         else if (eventType == 1)
@@ -206,7 +224,11 @@ public class EventLinkContentManager : MonoBehaviour
         }
         else if (eventType == 2)
         {
+            animationManager.SetActive(true);
+            animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(true);
+            animationManager.transform.Find("Button (Choose Interaction)").gameObject.SetActive(true);
             // TODO 展示交互相关UI
+
         }
         else if (eventType == 3)
         {
@@ -242,6 +264,11 @@ public class EventLinkContentManager : MonoBehaviour
         }
         else if (eventType == 2)
         {
+            eventLink.saveEvent(focusedEventIndex, null);
+            animationManager.SetActive(false);
+            animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
+            animationManager.transform.Find("Button (Choose Interaction)").gameObject.SetActive(false);
+            //todo 播放交互
             //TODO 隐藏隐藏交互相关UI
         }
         else if (eventType == 3)
@@ -255,5 +282,19 @@ public class EventLinkContentManager : MonoBehaviour
             Debug.Log(eventLink.link[focusedEventIndex].animationType);
             AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], eventLink.link[focusedEventIndex].animationType);
         }
+    }
+
+    public void nextEvent()
+    {
+        ++focusedEventIndex;
+        if (focusedEventIndex == eventCount) return;
+        eventLink.play(focusedEventIndex);
+    }
+
+
+    public void playEvent()
+    {
+        focusedEventIndex = 0;
+        eventLink.play(focusedEventIndex);
     }
 }

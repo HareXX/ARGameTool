@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EventUnit : MonoBehaviour
 {
+    
     public int m_ObjectType = -1;
 
     /// <summary>
@@ -21,16 +22,17 @@ public class EventUnit : MonoBehaviour
 
     public int animationType;
 
+    public string voiceInteractionSentence;
+    public string voiceInteractionSentenceToCompare;
+    public int gestureInteractionIndex;
+    public float cosResult = -1;
+
+
     /// <summary>
     /// 当前事件的所有元素
     /// </summary>
-    List<GameObject> m_ObjectList = new List<GameObject>();
 
-    public List<GameObject> objectList
-    {
-        get => m_ObjectList;
-        set => m_ObjectList = value;
-    }
+    public List<GameObject> objectList = new List<GameObject>();
 
     public void setType(int type)
     {
@@ -120,6 +122,8 @@ public class EventUnit : MonoBehaviour
         }
         else if (m_ObjectType == 2)
         {
+            objectList.Add(AnimationManager.instance.targetObject);
+
             //TODO 禁止交互相关功能
             // 把关键词列表存下来, InteractionManger.getList()
         }
@@ -152,6 +156,22 @@ public class EventUnit : MonoBehaviour
         }
         else if (m_ObjectType == 2)
         {
+            if(voiceInteractionSentence == null)
+            {
+                return;
+            }
+            else
+            {
+                EditPage.instance.VoiceInteractionCanvas.SetActive(true);
+                SpeechScript.Instance.inputText = voiceInteractionSentence;
+                
+            }
+            if(gestureInteractionIndex == null)
+            {
+                EditPage.instance.GestureInteractionCanvas.SetActive(true);
+//todo
+                return;
+            }
             //TODO 交互相关操作
             // while(1)
             // {

@@ -8,7 +8,10 @@ public class EventLink : MonoBehaviour
     /// <summary>
     /// 事件链
     /// </summary>
-    List<EventUnit> m_Link = new List<EventUnit>(); 
+    public GameObject EventUnit;
+    public GameObject Eventlink;
+
+    public List<EventUnit> m_Link = new List<EventUnit>();
 
     public List<EventUnit> link
     {
@@ -32,9 +35,10 @@ public class EventLink : MonoBehaviour
     /// </summary>
     public void addEvent(int type)
     {
-        EventUnit newEvent = new EventUnit();
-        newEvent.setType(type);
-        m_Link.Add(newEvent);
+        GameObject eventUnit = Instantiate(EventUnit,Eventlink.transform);
+        eventUnit.AddComponent<EventUnit>();
+        eventUnit.GetComponent<EventUnit>().setType(type);
+        m_Link.Add(eventUnit.GetComponent<EventUnit>());
         ++m_EventCount;
     }
 
@@ -67,12 +71,9 @@ public class EventLink : MonoBehaviour
     /// <summary>
     /// 依次运行每个事件
     /// </summary>
-    public void play()
+    public void play(int index)
     {
-        foreach (EventUnit eventUnit in m_Link)
-        {
-            eventUnit.play();
-        }
+        m_Link[index].play();
     }
     
 
