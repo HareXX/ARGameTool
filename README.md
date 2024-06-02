@@ -24,7 +24,7 @@ version：“1.0.0”
 
 进入Unity后，右上角的Layout建议选择2 by 3，选择过后编辑器如图所示：
 
-![README Picture](README Picture\Unity Picture.png)
+![README Picture](.\README Picture\Unity Picture.png)
 
 下面简要介绍一下Assets中一些主要的文件夹及其内容：
 
