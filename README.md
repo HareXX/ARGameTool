@@ -30,7 +30,9 @@ version：“1.0.0”
 
 MobileARTemplateAssets：该文件夹是项目创建时依赖的原始项目，该项目中包含了一个移动AR项目的模板。
 
-Models：该文件夹包含了AR游戏物体的模型。
+Models：该文件夹包含了AR游戏物体的模型素材。
+
+Pictures:该文件夹包含了项目中的图片素材。
 
 Scenes：该文件夹包含了所有在开发过程中我们所建立的场景文件，最终项目的场景入口为PlayScene。
 
@@ -54,4 +56,9 @@ Scripts：该文件夹包含了所有脚本文件。
 
 4.由于我们新创建的AR物体模型是自己制作的，会导致其架构不能百分百契合原始项目中自带的Ar物体模型，有时会返回报错，但报错不影响游戏运行。
 
-5.对对话框游戏体进行编辑时，我们所采用的方法不够好，导致编辑对话框结束后相关UI不能及时隐藏，后续可以对该算法进行优化。相关脚本地址：Assets/Scripts/MobileARTemplateAssets/Scripts/ARTemplateMenuManager.cs中318行附近。
+5.存储模块的功能未能集成到主程序中。相关实现在Git分支store分支中。
+
+6.对对话框游戏体进行编辑时，我们所采用的方法不够好，导致编辑对话框结束后相关UI不能及时隐藏，后续可以对该算法进行优化。相关脚本地址：Assets/Scripts/MobileARTemplateAssets/Scripts/ARTemplateMenuManager.cs中318行附近。
+
+
+
