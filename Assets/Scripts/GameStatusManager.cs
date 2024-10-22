@@ -7,16 +7,30 @@ using UnityEngine.UI;
 public class GameStatusManager : MonoBehaviour
 {
     public static GameStatusManager instance;
+
     public bool isEditing;
+
     public TextMeshProUGUI TextStatus;
+
     public Button ButtonNewProject;
+
     public Button ButtonEditProject;
+
     public Button ButtonPlay;
+
     private void Awake()
     {
         instance = this;
         isEditing = true;
     }
+
+    public void ChangeMode()
+    {
+        isEditing = !isEditing;
+        RenewTextStatus();
+        RenewLayoutStatus();
+    }
+
     public void ChangetoEditMode()
     {
         isEditing = true;
