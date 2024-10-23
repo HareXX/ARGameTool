@@ -44,13 +44,17 @@ public class EventLinkContentManager : MonoBehaviour
     //编辑按钮
     public GameObject editButton;
 
-    //TODO 保存按钮
+    // 保存按钮
     public GameObject saveButton;
 
     public GameObject createButton;
 
     //
     public GameObject animationManager;
+
+    public GameObject voiceUI;
+
+    public bool objectDetection = false;
 
     //public GameObject interactionManager;
     //UI

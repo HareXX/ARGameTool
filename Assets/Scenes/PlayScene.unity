@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028353, g: 0.22571383, b: 0.30692253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -4654765, y: 100}
+  m_AnchoredPosition: {x: -4747214, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -5284,9 +5284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85f6607e1d8f5b4f9d82ad35a27e6a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  api_key: ZO7xgi0yOSQ9BEEQXWDPSK3s
-  secret_Key: sGKpDhjkcBRrrr3hYLsCXt2TZk7HNsXB
-  inputText: "\u829D\u9EBB\u5F00\u95E8"
 --- !u!1 &390803287
 GameObject:
   m_ObjectHideFlags: 0
@@ -7573,7 +7570,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 524999791}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1369053042}
+        m_TargetAssemblyTypeName: SpeechRec, Assembly-CSharp
+        m_MethodName: StopRecordingAndSave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &524999791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14598,6 +14607,8 @@ MonoBehaviour:
   saveButton: {fileID: 784536417}
   createButton: {fileID: 1059051467}
   animationManager: {fileID: 2065750890}
+  voiceUI: {fileID: 825728488}
+  objectDetection: 0
   UI: {fileID: 2099970465}
   objectToAdded: []
   eventCount: 0
@@ -19508,6 +19519,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1369053040}
+  - component: {fileID: 1369053042}
+  - component: {fileID: 1369053041}
   m_Layer: 0
   m_Name: Speech&GestureManager
   m_TagString: Untagged
@@ -19530,6 +19543,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1369053041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369053039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b4a801559aeb044a0003cf53d500ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  captureState: {fileID: 0}
+  arCameraManager: {fileID: 0}
+--- !u!114 &1369053042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369053039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657c2320333db8b45ab13d9fc2b326ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  captureState: {fileID: 165643929}
+  istrue: {fileID: 0}
 --- !u!1001 &1369165487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25444,7 +25485,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1774315776
@@ -30392,7 +30433,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2064194744}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1369053042}
+        m_TargetAssemblyTypeName: SpeechRec, Assembly-CSharp
+        m_MethodName: StartRecording
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2064194744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30640,7 +30693,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2068738021

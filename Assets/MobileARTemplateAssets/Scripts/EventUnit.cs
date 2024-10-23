@@ -155,7 +155,8 @@ public class EventUnit : MonoBehaviour
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
-            while (objectIncamera) { }
+            int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
+            EventLinkContentManager.Instance.nextEvent();
 
             return;
         }
@@ -176,8 +177,9 @@ public class EventUnit : MonoBehaviour
             }
             else
             {
-                //TODO
-                EditPage.instance.VoiceInteractionCanvas.SetActive(true);
+                EventLinkContentManager.Instance.objectDetection = true;
+                EventLinkContentManager.Instance.voiceUI.SetActive(true);
+                //EditPage.instance.VoiceInteractionCanvas.SetActive(true);
                 //SpeechScript.Instance.inputText = voiceInteractionSentence;
                 
             }
@@ -219,20 +221,5 @@ public class EventUnit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (!isEditing && objectList.Count != 0)
-        {
-            Vector3 viewPos = Camera.main.WorldToViewportPoint(objectList[0].transform.position);//在摄像机范围外
-            if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
-            {
-                objectIncamera = true;
-            }
-            else
-            {
-                objectIncamera = false;
-            }
-
-        }
-    }
+    
 }

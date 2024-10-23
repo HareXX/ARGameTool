@@ -5,24 +5,24 @@ using UnityEngine;
 
 public class StringSimilarity : MonoBehaviour
 {
-    // ¶¨Òå³£¼ûµÄÖĞÎÄÓïÆøÖú´Ê
+    // å®šä¹‰å¸¸è§çš„ä¸­æ–‡è¯­æ°”åŠ©è¯
     private static readonly HashSet<string> StopWords = new HashSet<string>
     {
-        "°¡", "Ñ½", "°É", "Âğ", "Å¶", "Âï", "Ó´", "ÄØ", "ßÂ", "¹ş", "ºÙ", "ÍÛ","µÄ"
+        "å•Š", "å‘€", "å§", "å—", "å“¦", "å˜›", "å“Ÿ", "å‘¢", "å‘—", "å“ˆ", "å˜¿", "å“‡","çš„"
     };
 
-    // È¥µôÓïÆøÖú´Ê
+    // å»æ‰è¯­æ°”åŠ©è¯
     private static string RemoveStopWords(string input)
     {
         foreach (var word in StopWords)
         {
-            input = Regex.Replace(input, word, ""); // Ê¹ÓÃÕıÔòÌæ»»µôÓïÆøÖú´Ê
+            input = Regex.Replace(input, word, ""); // ä½¿ç”¨æ­£åˆ™æ›¿æ¢æ‰è¯­æ°”åŠ©è¯
         }
         return input;
     }
 
 
-   // ¼ÆËãÁ½¸ö×Ö·û´®µÄLevenshtein¾àÀë
+    // è®¡ç®—ä¸¤ä¸ªå­—ç¬¦ä¸²çš„Levenshteinè·ç¦»
     private static int LevenshteinDistance(string source, string target)
     {
         if (string.IsNullOrEmpty(source)) return target.Length;
@@ -30,11 +30,11 @@ public class StringSimilarity : MonoBehaviour
 
         int[,] distance = new int[source.Length + 1, target.Length + 1];
 
-        // ³õÊ¼»¯¾àÀë¾ØÕó
+        // åˆå§‹åŒ–è·ç¦»çŸ©é˜µ
         for (int i = 0; i <= source.Length; i++) distance[i, 0] = i;
         for (int j = 0; j <= target.Length; j++) distance[0, j] = j;
 
-        // ¼ÆËã¾àÀë
+        // è®¡ç®—è·ç¦»
         for (int i = 1; i <= source.Length; i++)
         {
             for (int j = 1; j <= target.Length; j++)
@@ -48,19 +48,18 @@ public class StringSimilarity : MonoBehaviour
     }
 
 
-    // ¼ÆËãÁ½¸öÖĞÎÄ×Ö·û´®µÄÏàËÆ¶È
+    // è®¡ç®—ä¸¤ä¸ªä¸­æ–‡å­—ç¬¦ä¸²çš„ç›¸ä¼¼åº¦
     public static double CalculateSimilarity(string string1, string string2)
     {
-        // È¥³ıÓïÆøÖú´Ê
+        // å»é™¤è¯­æ°”åŠ©è¯
         string processedString1 = RemoveStopWords(string1);
         string processedString2 = RemoveStopWords(string2);
 
-        // ¼ÆËãLevenshtein¾àÀë
+        // è®¡ç®—Levenshteinè·ç¦»
         int levenshteinDistance = LevenshteinDistance(processedString1, processedString2);
 
-        // ¸ù¾İLevenshtein¾àÀë¼ÆËãÏàËÆ¶È
+        // æ ¹æ®Levenshteinè·ç¦»è®¡ç®—ç›¸ä¼¼åº¦
         int maxLength = Math.Max(processedString1.Length, processedString2.Length);
         return (maxLength - levenshteinDistance) / (double)maxLength;
     }
 }
-

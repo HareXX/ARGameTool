@@ -6,7 +6,10 @@ using System;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Numerics;
 using TMPro;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+
 public class SpeechRec : MonoBehaviour
 {
     private AudioClip recordedClip;
@@ -20,12 +23,13 @@ public class SpeechRec : MonoBehaviour
 
     public TextMeshProUGUI captureState;
     public TextMeshProUGUI istrue;
+    private bool objectInCamera = true;
+
     private void Start()
     {
-        TOKEN=GetAccessToken();
-        
+        TOKEN = GetAccessToken();
     }
-    // ¿ªÊ¼Â¼Òô
+    // å¼€å§‹å½•éŸ³
     public void StartRecording()
     {
         if (Microphone.devices.Length > 0)
@@ -33,126 +37,133 @@ public class SpeechRec : MonoBehaviour
             microphoneDevice = Microphone.devices[0];
             recordedClip = Microphone.Start(microphoneDevice, false, 60, 16000);
             isRecording = true;
-            Debug.Log("Â¼Òô¿ªÊ¼");
-            
+            Debug.Log("å½•éŸ³å¼€å§‹");
+
         }
         else
         {
-            Debug.LogWarning("Î´¼ì²âµ½Âó¿Ë·çÉè±¸");
+            Debug.LogWarning("æœªæ£€æµ‹åˆ°éº¦å…‹é£è®¾å¤‡");
         }
     }
 
-    // Í£Ö¹Â¼Òô²¢±£´æÎª PCM ÎÄ¼ş
+    // åœæ­¢å½•éŸ³å¹¶ä¿å­˜ä¸º PCM æ–‡ä»¶
     public void StopRecordingAndSave()
     {
         if (isRecording)
         {
-            int recordedSamples = Microphone.GetPosition(microphoneDevice);  // »ñÈ¡Êµ¼ÊÂ¼ÒôÑù±¾ÊıÁ¿
-            Microphone.End(microphoneDevice);  // Í£Ö¹Â¼Òô
+            int recordedSamples = Microphone.GetPosition(microphoneDevice);  // è·å–å®é™…å½•éŸ³æ ·æœ¬æ•°é‡
+            Microphone.End(microphoneDevice);  // åœæ­¢å½•éŸ³
 
             string filePath = SavePcmFile(recordedClip, recordedSamples, "RecordedAudio.pcm");
-            Debug.Log("Â¼ÒôÒÑ½áÊø£¬²¢±£´æÎª RecordedAudio.pcm");
+            Debug.Log("å½•éŸ³å·²ç»“æŸï¼Œå¹¶ä¿å­˜ä¸º RecordedAudio.pcm");
             isRecording = false;
             Upload(filePath);
         }
     }
 
-    // ±£´æÊµ¼ÊÂ¼ÒôÊı¾İÎª PCM ÎÄ¼ş
+    // ä¿å­˜å®é™…å½•éŸ³æ•°æ®ä¸º PCM æ–‡ä»¶
     private string SavePcmFile(AudioClip clip, int sampleCount, string filename)
     {
         var filepath = Path.Combine(Application.persistentDataPath, filename);
         using (FileStream fileStream = new FileStream(filepath, FileMode.Create))
         {
-            int channels = clip.channels;  // »ñÈ¡ÉùµÀÊı
+            int channels = clip.channels;  // è·å–å£°é“æ•°
 
-            float[] floatData = new float[sampleCount * channels];  // »ñÈ¡Êµ¼ÊÂ¼ÒôÊı¾İ
-            clip.GetData(floatData, 0);  // ¶ÁÈ¡Ñù±¾Êı¾İ
+            float[] floatData = new float[sampleCount * channels];  // è·å–å®é™…å½•éŸ³æ•°æ®
+            clip.GetData(floatData, 0);  // è¯»å–æ ·æœ¬æ•°æ®
 
-            byte[] pcmData = new byte[sampleCount * channels * 2];  // Ã¿Ñù±¾2×Ö½Ú
+            byte[] pcmData = new byte[sampleCount * channels * 2];  // æ¯æ ·æœ¬2å­—èŠ‚
 
             for (int i = 0; i < sampleCount * channels; i++)
             {
                 short pcmSample = (short)(Mathf.Clamp(floatData[i], -1f, 1f) * short.MaxValue);
-                pcmData[i * 2] = (byte)(pcmSample & 0xFF);  // µÍ×Ö½Ú
-                pcmData[i * 2 + 1] = (byte)((pcmSample >> 8) & 0xFF);  // ¸ß×Ö½Ú
+                pcmData[i * 2] = (byte)(pcmSample & 0xFF);  // ä½å­—èŠ‚
+                pcmData[i * 2 + 1] = (byte)((pcmSample >> 8) & 0xFF);  // é«˜å­—èŠ‚
             }
 
-            fileStream.Write(pcmData, 0, pcmData.Length);  // Ğ´ÈëÎÄ¼ş
+            fileStream.Write(pcmData, 0, pcmData.Length);  // å†™å…¥æ–‡ä»¶
         }
 
-        Debug.Log("ÎÄ¼ş±£´æÂ·¾¶: " + filepath);
+        Debug.Log("æ–‡ä»¶ä¿å­˜è·¯å¾„: " + filepath);
         return filepath;
     }
-
     private void Upload(string filePath)
     {
 
-        // PCMÒôÆµÎÄ¼şÂ·¾¶
+        // PCMéŸ³é¢‘æ–‡ä»¶è·¯å¾„
         byte[] audioBytes = File.ReadAllBytes(filePath);
         string audioBase64 = Convert.ToBase64String(audioBytes);
 
-        // ´´½¨RestClientºÍÇëÇó
+        // åˆ›å»ºRestClientå’Œè¯·æ±‚
         var client = new RestClient("https://vop.baidu.com/server_api");
         client.Timeout = -1;
         var request = new RestRequest(Method.POST);
 
-        // ÉèÖÃÇëÇóÍ·
+        // è®¾ç½®è¯·æ±‚å¤´
         request.AddHeader("Content-Type", "application/json");
         request.AddHeader("Accept", "application/json");
 
-        // ¹¹½¨ÇëÇóÌå
+        // æ„å»ºè¯·æ±‚ä½“
         var body = $@"{{
             ""format"": ""pcm"",
             ""rate"": 16000,
             ""channel"": 1,
             ""cuid"": ""wX75JNDgiwEl6d3SXium9SN4"",
-            ""token"": ""{TOKEN}"", // Ìæ»»ÎªÄãµÄAccess Token
+            ""token"": ""{TOKEN}"", // æ›¿æ¢ä¸ºä½ çš„Access Token
             ""speech"": ""{audioBase64}"",
             ""len"": {audioBytes.Length}
         }}";
 
-        // ½«ÇëÇóÌåÌí¼Óµ½ÇëÇóÖĞ
+        // å°†è¯·æ±‚ä½“æ·»åŠ åˆ°è¯·æ±‚ä¸­
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
-        // Ö´ĞĞÇëÇó²¢»ñÈ¡ÏìÓ¦
+        // æ‰§è¡Œè¯·æ±‚å¹¶è·å–å“åº”
         IRestResponse response = client.Execute(request);
-        //´¦Àí»ñµÃ
+        //å¤„ç†è·å¾—
         string res = response.Content;
+        Debug.Log(res);
         int len = 0;
-        for (int i = 0; i < res.Length-6; i++)
+        for (int i = 0; i < res.Length - 6; i++)
         {
             if (res.Substring(i, 6) == "result")
             {
-                for(; res[i+10+len] != '"'; len++) { }
+                for (; res[i + 10 + len] != '"'; len++) { }
                 res = res.Substring(i + 10, len);
 
             }
         }
         Debug.Log(res);
         captureState.text = res;
-        Debug.Log("ÏàËÆ¶È£º"+similar(res));
-
-
+        double similarity = similar(res);
+        Debug.Log("ç›¸ä¼¼åº¦ï¼š" + similarity);
+        if (similarity > 0 && objectInCamera)
+        {
+            int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
+            EventLinkContentManager.Instance.voiceUI.SetActive(false);
+            EventLinkContentManager.Instance.objectDetection = false;
+            EventLinkContentManager.Instance.nextEvent();
+        }
     }
+    
 
     private double similar(string s)
     {
         int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
-        string currentVoiceInteractionSentence="";
+        string currentVoiceInteractionSentence = "";
         if (currentIndex != -1)
         {
             currentVoiceInteractionSentence = EventLinkContentManager.Instance.eventLink.link[currentIndex].voiceInteractionSentence;
-            Debug.Log("µ±Ç°ÊÂ¼şµÄÓïÒô½»»¥¾ä×Ó: " + currentVoiceInteractionSentence);
+            Debug.Log("å½“å‰äº‹ä»¶çš„è¯­éŸ³äº¤äº’å¥å­: " + currentVoiceInteractionSentence);
         }
-        return StringSimilarity.CalculateSimilarity(currentVoiceInteractionSentence, s);   
+        return StringSimilarity.CalculateSimilarity(currentVoiceInteractionSentence, s);
     }
 
     /**
-        * Ê¹ÓÃ AK£¬SK Éú³É¼øÈ¨Ç©Ãû£¨Access Token£©
-        * @return ¼øÈ¨Ç©ÃûĞÅÏ¢£¨Access Token£©
+        * ä½¿ç”¨ AKï¼ŒSK ç”Ÿæˆé‰´æƒç­¾åï¼ˆAccess Tokenï¼‰
+        * @return é‰´æƒç­¾åä¿¡æ¯ï¼ˆAccess Tokenï¼‰
         */
     private string GetAccessToken()
-    {   
+    {
         var client = new RestClient($"https://aip.baidubce.com/oauth/2.0/token");
         client.Timeout = -1;
         var request = new RestRequest(Method.POST);
@@ -164,4 +175,23 @@ public class SpeechRec : MonoBehaviour
         var result = JsonConvert.DeserializeObject<dynamic>(response.Content);
         return result.access_token.ToString();
     }
+
+    void Update()
+    {
+        //if (EventLinkContentManager.Instance == null) return;
+        //int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
+        //if (currentIndex != -1 && EventLinkContentManager.Instance.objectDetection)
+        //{
+        //    UnityEngine.Vector3 viewPos = Camera.main.WorldToViewportPoint(EventLinkContentManager.Instance.eventLink.link[currentIndex].objectList[0].transform.position);//åœ¨æ‘„åƒæœºèŒƒå›´å¤–
+        //    if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
+        //    {
+        //        objectInCamera = true;
+        //    }
+        //    else
+        //    {
+        //        objectInCamera = false;
+        //    }
+        //}
+    }
+
 }
