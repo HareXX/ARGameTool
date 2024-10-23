@@ -23,10 +23,19 @@ public class EventUnit : MonoBehaviour
     public int animationType;
 
     public string voiceInteractionSentence;
+
     public string voiceInteractionSentenceToCompare;
+
     public int gestureInteractionIndex;
+
     public float cosResult = -1;
 
+    public Camera camera;
+
+    public bool isEditing = false;
+
+    //当前物体是否在摄像机范围内
+    public bool objectIncamera = false;
 
     /// <summary>
     /// 当前事件的所有元素
@@ -65,6 +74,7 @@ public class EventUnit : MonoBehaviour
     /// </summary>
     public void editEvent()
     {
+        isEditing = true;
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
@@ -97,6 +107,7 @@ public class EventUnit : MonoBehaviour
     /// </summary>
     public void saveEvent(List<GameObject> objects)
     {
+        isEditing = true;
         Debug.Log("进入EventUnit");
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
@@ -140,9 +151,12 @@ public class EventUnit : MonoBehaviour
     /// </summary>
     public void play()
     {
+        isEditing = false;
         if (m_ObjectType == -1) return;
         if (m_ObjectType == 0)
         {
+            while (objectIncamera) { }
+
             return;
         }
         else if (m_ObjectType == 1)
@@ -162,6 +176,7 @@ public class EventUnit : MonoBehaviour
             }
             else
             {
+                //TODO
                 EditPage.instance.VoiceInteractionCanvas.SetActive(true);
                 SpeechScript.Instance.inputText = voiceInteractionSentence;
                 
@@ -169,15 +184,11 @@ public class EventUnit : MonoBehaviour
             if(gestureInteractionIndex == null)
             {
                 EditPage.instance.GestureInteractionCanvas.SetActive(true);
-//todo
+
                 return;
             }
-            //TODO 交互相关操作
-            // while(1)
-            // {
-            //      List2 = InteractionManager.getWords();
-            //      if (InteractionManager.compare(List1, List2)) break;
-            // }
+            
+           
         }
         else if (m_ObjectType == 3)
         {
@@ -210,6 +221,18 @@ public class EventUnit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!isEditing && objectList.Count != 0)
+        {
+            Vector3 viewPos = Camera.main.WorldToViewportPoint(objectList[0].transform.position);//在摄像机范围外
+            if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
+            {
+                objectIncamera = true;
+            }
+            else
+            {
+                objectIncamera = false;
+            }
+
+        }
     }
 }

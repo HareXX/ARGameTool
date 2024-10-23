@@ -9,7 +9,7 @@ public class EditPage : MonoBehaviour
     public GameObject PrefabFile;
     public List<GameObject> ToHide;
     public GameObject PlaymodeManager;
-    public GameObject ButtonContinue;
+    //public GameObject ButtonContinue;
 
     public GameObject VoiceInteractionCanvas;
     public GameObject GestureInteractionCanvas;
