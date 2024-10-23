@@ -278,7 +278,7 @@ public class EventLinkContentManager : MonoBehaviour
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(false);
             Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
-            Debug.Log("Dammmmmmmmmmmmmmn");
+        
             Debug.Log(eventLink.link[focusedEventIndex].animationType);
             AnimationManager.instance.playAnimation(eventLink.link[focusedEventIndex].objectList[0], eventLink.link[focusedEventIndex].animationType);
         }

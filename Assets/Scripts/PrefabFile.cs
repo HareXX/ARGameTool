@@ -40,8 +40,8 @@ public class PrefabFile : MonoBehaviour
             }
             EditPage.instance.PlaymodeManager.SetActive(true);
             PlaymodeManager.instance.PlayObjects = gameObjects;
-            EventLinkContentManager.Instance.playEvent();
-            EditPage.instance.ButtonContinue.SetActive(true);
+            EventLinkContentManager.Instance.playEvent();   //播放事件
+            //EditPage.instance.ButtonContinue.SetActive(true);
         }
 
     }
