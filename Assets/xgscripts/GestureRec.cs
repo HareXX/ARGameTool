@@ -139,9 +139,10 @@ public class GestureRec : MonoBehaviour
         request.AddParameter("client_secret", SECRET_KEY);
 
         IRestResponse response = client.Execute(request);
-
-        var result = JsonConvert.DeserializeObject<dynamic>(response.Content);
-        AccessToken = result.access_token.ToString();
+        string content = response.Content;
+        string result = content.Substring(content.IndexOf("access_token\":\"") + 15);
+        AccessToken = result.Substring(0, result.IndexOf("\""));
+        
         return;
     }
 

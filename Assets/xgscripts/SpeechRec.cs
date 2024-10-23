@@ -172,8 +172,14 @@ public class SpeechRec : MonoBehaviour
         request.AddParameter("client_secret", SECRET_KEY);
         IRestResponse response = client.Execute(request);
         Debug.Log(response.Content);
-        var result = JsonConvert.DeserializeObject<dynamic>(response.Content);
-        return result.access_token.ToString();
+        string content = response.Content;
+
+
+        string result = content.Substring(content.IndexOf("access_token\":\"") + 15);
+        result = result.Substring(0, result.IndexOf("\""));
+        //var result = JsonConvert.DeserializeObject<dynamic>(response.Content);
+        //return result.access_token.ToString();
+        return result;
     }
 
     void Update()
