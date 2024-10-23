@@ -178,7 +178,7 @@ public class EventUnit : MonoBehaviour
             {
                 //TODO
                 EditPage.instance.VoiceInteractionCanvas.SetActive(true);
-                SpeechScript.Instance.inputText = voiceInteractionSentence;
+                //SpeechScript.Instance.inputText = voiceInteractionSentence;
                 
             }
             if(gestureInteractionIndex == null)
