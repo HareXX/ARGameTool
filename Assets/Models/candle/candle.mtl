@@ -1,0 +1,36 @@
+# Exported from Nomad Sculpt
+
+newmtl Bottom
+ Kd 1 1 1
+ map_Kd Bottom-Colour.png
+ map_roughness Bottom-Roughness.png
+ map_metallic Bottom-Metallic.png
+
+newmtl Fuse
+ Kd 1 1 1
+ map_Kd Fuse-Colour.png
+ map_roughness Fuse-Roughness.png
+ map_metallic Fuse-Metallic.png
+
+newmtl Handle_1
+ Kd 1 1 1
+ map_Kd Handle_1-Colour.png
+ map_roughness Handle_1-Roughness.png
+ map_metallic Handle_1-Metallic.png
+
+newmtl Candle
+ Kd 1 1 1
+ map_Kd Candle-Colour.png
+ map_roughness Candle-Roughness.png
+ map_metallic Candle-Metallic.png
+
+newmtl Flame
+ Kd 1 1 1
+ map_roughness Flame-Roughness.png
+ map_metallic Flame-Metallic.png
+
+newmtl Holder-3
+ Kd 1 1 1
+ map_Kd Holder-3-Colour.png
+ map_roughness Holder-3-Roughness.png
+ map_metallic Holder-3-Metallic.png
