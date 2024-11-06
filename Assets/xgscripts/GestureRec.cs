@@ -45,11 +45,11 @@ public class GestureRec : MonoBehaviour
             arCameraManager = GetComponent<ARCameraManager>();
             Debug.Log("ar camera manager初始化");
         }
-        captureState.text = "genshin";
+        //captureState.text = "genshin";
         if (arCameraManager.TryAcquireLatestCpuImage(out XRCpuImage image))
         {
             SaveCpuImageAsPNG(image,"gesture.png");
-            captureState.text = "get picture";
+            //captureState.text = "get picture";
             image.Dispose(); // 释放图像资源
             return null;
         }
@@ -168,5 +168,18 @@ public class GestureRec : MonoBehaviour
 
         IRestResponse response = client.Execute(request);
         Debug.Log(response.Content);  // 输出 API 响应
+        string res = response.Content;
+        int len = 0;
+        for (int i = 0; i < res.Length - 6; i++)
+        {
+            if (res.Substring(i, 6) == "result")
+            {
+                for (; res[i + 10 + len] != '"'; len++) { }
+                res = res.Substring(i + 10, len);
+
+            }
+        }
+        Debug.Log(res);
+
     }
 }

@@ -300,5 +300,14 @@ public class EventLinkContentManager : MonoBehaviour
     {
         focusedEventIndex = 0;
         eventLink.play(focusedEventIndex);
+
     }
+
+    public void speechMatched() //语音匹配成功
+    {
+        voiceUI.SetActive(false);
+        objectDetection = false;
+        nextEvent();
+    }
+    
 }
