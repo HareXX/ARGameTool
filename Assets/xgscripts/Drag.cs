@@ -35,7 +35,8 @@ public class Drag : MonoBehaviour
     }
     public void release()
     {
-        Debug.Log(grabObject.name + "|" + preParent.name);
+        if(grabObject!=null&&preParent!=null)
+            Debug.Log(grabObject.name + "|" + preParent.name);
         if (grabObject != null)
         {
             
