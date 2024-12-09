@@ -123,7 +123,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Renderer
       value: 
-      objectReference: {fileID: 9216690962553787641}
+      objectReference: {fileID: 1553248230782096605}
     - target: {fileID: 6039300071078109978, guid: ebd7292e888c84f05924605e51048072,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -313,6 +313,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1612489593093549246}
   m_SourcePrefab: {fileID: 100100000, guid: 760ff1016032841c3bfc825b944d9fe6, type: 3}
+--- !u!137 &1553248230782096605 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1206874426333947015, guid: 760ff1016032841c3bfc825b944d9fe6,
+    type: 3}
+  m_PrefabInstance: {fileID: 8849130249726316452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4010631623103043342 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5577370749860616362, guid: 760ff1016032841c3bfc825b944d9fe6,
