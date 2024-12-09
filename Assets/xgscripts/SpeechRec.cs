@@ -184,20 +184,20 @@ public class SpeechRec : MonoBehaviour
 
     void Update()
     {
-        //if (EventLinkContentManager.Instance == null) return;
-        //int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
-        //if (currentIndex != -1 && EventLinkContentManager.Instance.objectDetection)
-        //{
-        //    UnityEngine.Vector3 viewPos = Camera.main.WorldToViewportPoint(EventLinkContentManager.Instance.eventLink.link[currentIndex].objectList[0].transform.position);//在摄像机范围外
-        //    if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
-        //    {
-        //        objectInCamera = true;
-        //    }
-        //    else
-        //    {
-        //        objectInCamera = false;
-        //    }
-        //}
+        if (EventLinkContentManager.Instance == null) return;
+        int currentIndex = EventLinkContentManager.Instance.focusedEventIndex;
+        if (currentIndex != -1 && EventLinkContentManager.Instance.objectDetection)
+        {
+            UnityEngine.Vector3 viewPos = Camera.main.WorldToViewportPoint(EventLinkContentManager.Instance.eventLink.link[currentIndex].objectList[0].transform.position);//在摄像机范围外
+            if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
+            {
+                objectInCamera = true;
+            }
+            else
+            {
+                objectInCamera = false;
+            }
+        }
     }
 
 }
