@@ -52,6 +52,11 @@ public class EventUnit : MonoBehaviour
     public void enableIntereaction(GameObject gameObject)
     {
         if (gameObject == null) return;
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            boxCollider.isTrigger = false;
+        }
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
@@ -62,6 +67,11 @@ public class EventUnit : MonoBehaviour
     public void disableIntereaction(GameObject gameObject)
     {
         if (gameObject == null) return;
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            boxCollider.isTrigger = true;
+        }
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
