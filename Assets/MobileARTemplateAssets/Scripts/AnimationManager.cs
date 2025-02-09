@@ -93,11 +93,11 @@ public class AnimationManager : MonoBehaviour
         m_InteractionGroup.OnFocusExiting(args);
         if (m_InteractionGroup.focusInteractable == null)
         {
-            Debug.Log("wuhu!!!!!!!!");
+            Debug.Log("未找到");
         }
         else
         {
-            Debug.Log("FFFFFFFFFF");
+            Debug.Log("找到了xg");
         }
 
         choosingObject = false;
@@ -146,8 +146,6 @@ public class AnimationManager : MonoBehaviour
             {
                 confirmBox.SetActive(true);
             }
-
-            Debug.Log("Damn!!!!!!!!!!");
         }
         // 在选择物体状态下，参考ARTemplateManager，如果选中物体，则出现确定按钮
         //
@@ -179,6 +177,23 @@ public class AnimationManager : MonoBehaviour
             gameObject.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0.5f), 2.5f, 1, 0);
             //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 2.5f);
 
+        }
+    }
+
+    // 这个方法将给定的脚本附加到指定的对象上
+    public void addGestureInteraction()
+    {
+        
+        // 检查目标对象是否已经有这个脚本
+        if (targetObject.GetComponent<Dragable>() == null)
+        {
+            // 如果没有，则添加脚本
+            targetObject.AddComponent<Dragable>();
+            Debug.Log("Dragable 已成功附加到 " + targetObject.name);
+        }
+        else
+        {
+            Debug.LogWarning(targetObject.name + " 已经有 Dragable 脚本了");
         }
     }
 }
