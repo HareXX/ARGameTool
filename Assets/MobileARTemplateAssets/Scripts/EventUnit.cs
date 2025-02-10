@@ -91,7 +91,6 @@ public class EventUnit : MonoBehaviour
             //把每个物体设置成可交互
             foreach (GameObject element in objectList)
             {
-                Debug.Log("Oooooooooaoooo");
                 enableIntereaction(element);
             }
         }
@@ -144,7 +143,7 @@ public class EventUnit : MonoBehaviour
         else if (m_ObjectType == 2)
         {
             objectList.Add(AnimationManager.instance.targetObject);
-
+            if (AnimationManager.instance.targetTriggerObject != null) objectList.Add(AnimationManager.instance.targetTriggerObject);
             //TODO 禁止交互相关功能
             // 把关键词列表存下来, InteractionManger.getList()
         }

@@ -16,15 +16,18 @@ public class AnimationManager : MonoBehaviour
     public XRScreenSpaceController ScreenSpaceController;
 
     public GameObject targetObject;
+    public GameObject targetTriggerObject;
 
     public int animationIndex;
 
     public GameObject content;
 
     public bool choosingObject = false;
+    public bool choosingTriggerObject = false;
 
     public GameObject confirmBox;
     public GameObject confirmBox1;
+    public GameObject triggerConfirmBox;
 
 
     public XRInteractionGroup m_InteractionGroup;
@@ -55,6 +58,12 @@ public class AnimationManager : MonoBehaviour
 
     public void enableIntereaction(GameObject gameObject)
     {
+        if (gameObject == null) return;
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            boxCollider.isTrigger = false;
+        }
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
@@ -64,6 +73,12 @@ public class AnimationManager : MonoBehaviour
 
     public void disableIntereaction(GameObject gameObject)
     {
+        if (gameObject == null) return;
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            boxCollider.isTrigger = true;
+        }
         MeshCollider[] visuals = gameObject.transform.Find("Visuals").GetComponentsInChildren<MeshCollider>();
         foreach (MeshCollider visual in visuals)
         {
@@ -77,7 +92,23 @@ public class AnimationManager : MonoBehaviour
         Debug.Log("开始选择物体");
         foreach (EventUnit eventUnit in content.GetComponent<EventLinkContentManager>().eventLink.link)
         {
-            Debug.Log("Ovo");
+            Debug.Log("选择物体A");
+            if (eventUnit.objectType != 0) continue;
+            foreach (GameObject gameObject in eventUnit.objectList)
+            {
+                enableIntereaction(gameObject);
+            }
+        }
+    }
+
+    public void chooseTriggerObject()
+    {
+        choosingObject = true;
+        choosingTriggerObject = true;
+        Debug.Log("开始选择物体");
+        foreach (EventUnit eventUnit in content.GetComponent<EventLinkContentManager>().eventLink.link)
+        {
+            Debug.Log("选择触发物体");
             if (eventUnit.objectType != 0) continue;
             foreach (GameObject gameObject in eventUnit.objectList)
             {
@@ -97,7 +128,7 @@ public class AnimationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("找到了xg");
+            Debug.Log("找到了");
         }
 
         choosingObject = false;
@@ -115,6 +146,39 @@ public class AnimationManager : MonoBehaviour
         if (!ifConfirmed)
         {
             targetObject = null;
+        }
+    }
+
+    public void finishChoosingTriggerObject(bool ifConfirmed)
+    {
+        FocusExitEventArgs args = new FocusExitEventArgs();
+        args.interactableObject = m_InteractionGroup.focusInteractable;
+        m_InteractionGroup.OnFocusExiting(args);
+        if (m_InteractionGroup.focusInteractable == null)
+        {
+            Debug.Log("未找到");
+        }
+        else
+        {
+            Debug.Log("找到了xg");
+        }
+
+        choosingObject = false;
+        choosingTriggerObject = false;
+        Debug.Log("结束选择物体");
+        foreach (EventUnit eventUnit in content.GetComponent<EventLinkContentManager>().eventLink.link)
+        {
+            if (eventUnit.objectType != 0) continue;
+            Debug.Log("找到物体事件");
+            foreach (GameObject gameObject in eventUnit.objectList)
+            {
+                Debug.Log("找到物体");
+                disableIntereaction(gameObject);
+            }
+        }
+        if (!ifConfirmed)
+        {
+            targetTriggerObject = null;
         }
     }
 
@@ -137,13 +201,21 @@ public class AnimationManager : MonoBehaviour
     {
         if (choosingObject == true && m_InteractionGroup?.focusInteractable != null)
         {
-            targetObject = m_InteractionGroup?.focusInteractable.transform.gameObject;
+            if (choosingTriggerObject == true)
+                targetTriggerObject = m_InteractionGroup?.focusInteractable.transform.gameObject;
+            else
+                targetObject = m_InteractionGroup?.focusInteractable.transform.gameObject;
             if (content.GetComponent<EventLinkContentManager>().eventLink.link[content.GetComponent<EventLinkContentManager>().focusedEventIndex].objectType == 2)
             {
-                confirmBox1.SetActive(true);
+                //Interaction
+                if (choosingTriggerObject == true)
+                    triggerConfirmBox.SetActive(true);
+                else
+                    confirmBox1.SetActive(true);
             }
             else
             {
+                //Animation
                 confirmBox.SetActive(true);
             }
         }
@@ -157,6 +229,7 @@ public class AnimationManager : MonoBehaviour
         if (animationType == 0)
         {
             Debug.Log("播放动画");
+            if (gameObject.GetComponentInChildren<Animator>() == null) return;
             gameObject.GetComponentInChildren<Animator>().Play("Animation", 0, 0);
             //gameObject.GetComponent<Animator>().Play("Animation", 0, 0);
             //gameObject.GetComponent<Animator>().SetBool("isOpen", false);
