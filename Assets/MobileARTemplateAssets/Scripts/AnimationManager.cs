@@ -254,9 +254,13 @@ public class AnimationManager : MonoBehaviour
     }
 
     // 这个方法将给定的脚本附加到指定的对象上
-    public void addGestureInteraction()
+    public void addDragInteraction()
     {
-        
+        if (targetObject == null)
+        {
+            Debug.LogWarning("targetObject为null");
+            return;
+        }
         // 检查目标对象是否已经有这个脚本
         if (targetObject.GetComponent<Dragable>() == null)
         {
@@ -268,5 +272,12 @@ public class AnimationManager : MonoBehaviour
         {
             Debug.LogWarning(targetObject.name + " 已经有 Dragable 脚本了");
         }
+    }
+
+    
+    //TODO 添加被肘的脚本
+    public void addPunchInteraction()
+    {
+        //
     }
 }
