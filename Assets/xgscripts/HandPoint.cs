@@ -8,8 +8,8 @@ using UnityEngine;
 public class HandPoint : MonoBehaviour
 {
     public GameObject visibleBall;
-    private float smoothSpeed = 15f; // Æ½»¬ËÙ¶È£¬µ÷½Ú¸ÃÖµ¿ÉÒÔ¿ØÖÆÆ½»¬µÄ³Ì¶È
-    private Vector3 targetPosition; // Ä¿±êÎ»ÖÃ
+    private float smoothSpeed = 15f; // Æ½ï¿½ï¿½ï¿½Ù¶È£ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Öµï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Ä³Ì¶ï¿½
+    private Vector3 targetPosition; // Ä¿ï¿½ï¿½Î»ï¿½ï¿½
     void Start()
     {
         
@@ -19,8 +19,10 @@ public class HandPoint : MonoBehaviour
     void Update()
     {
         HandInfo handInfo = ManomotionManager.Instance.Hand_infos[0].hand_info;
+
         if (handInfo.gesture_info.hand_side == HandSide.None)
         {
+
             if (visibleBall.activeSelf)
             {
                 visibleBall.SetActive(false);
@@ -38,19 +40,19 @@ public class HandPoint : MonoBehaviour
 
         if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.CLICK)
         {
-            Debug.Log("×¥×¡");
+            Debug.Log("click");
             visibleBall.GetComponent<Drag>().hold();
         }else if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.DROP)
         {
-            Debug.Log("ÊÍ·Å");
+            Debug.Log("drop");
             visibleBall.GetComponent<Drag>().release();
         }
         Vector3 dir = Camera.main.ViewportPointToRay(handInfo.tracking_info.palm_center).direction;
         Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.tracking_info.palm_center);
         Vector3 newPosition= palmCenterPos + handInfo.tracking_info.depth_estimation* dir *0.5f;
-        // Ê¹ÓÃLerpÀ´Æ½»¬¹ý¶Éµ½ÐÂµÄÄ¿±êÎ»ÖÃ
+        // Ê¹ï¿½ï¿½Lerpï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½Âµï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
         //targetPosition = Vector3.Lerp(targetPosition, newPosition, smoothSpeed * Time.deltaTime);
-        // ¸üÐÂÇòÌåµÄÎ»ÖÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         visibleBall.transform.position = newPosition;
     }
 }

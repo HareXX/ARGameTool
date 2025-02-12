@@ -105,8 +105,16 @@ public class EventLinkContentManager : MonoBehaviour
     public void ClearFocusObject()
     {
         FocusExitEventArgs args = new FocusExitEventArgs();
-        args.interactableObject = m_InteractionGroup.focusInteractable;
-        m_InteractionGroup.OnFocusExiting(args);
+        args.interactionGroup = m_InteractionGroup;
+        Debug.Log(args.interactableObject);
+        if (m_InteractionGroup != null)
+            args.interactableObject = m_InteractionGroup.focusInteractable;
+        if (args.interactableObject != null)
+        {
+            Debug.Log("不是null");
+            m_InteractionGroup.OnFocusExiting(args);
+        }
+            
     }
 
     /// <summary>
@@ -255,7 +263,7 @@ public class EventLinkContentManager : MonoBehaviour
             foreach (GameObject gameObject in ObjectSpawner.objectToAdded) objectToAdded.Add(gameObject);
             //objectToAdded = ObjectSpawner.objectToAdded;
             ObjectSpawner.objectToAdded.Clear();
-
+            ClearFocusObject();
             Debug.Log("开始保存");
             Debug.Log(objectToAdded);
             eventLink.saveEvent(focusedEventIndex, objectToAdded);

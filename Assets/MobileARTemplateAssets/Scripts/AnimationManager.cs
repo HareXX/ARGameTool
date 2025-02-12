@@ -53,7 +53,7 @@ public class AnimationManager : MonoBehaviour
     // 点击选择动画按钮，出现选择动画的滚动条，选择相应动画
     void Start()
     {
-        
+        //ClearFocusObject();
     }
 
     public void enableIntereaction(GameObject gameObject)
@@ -197,6 +197,7 @@ public class AnimationManager : MonoBehaviour
     //}
 
     // Update is called once per frame
+
     void Update()
     {
         if (choosingObject == true && m_InteractionGroup?.focusInteractable != null)
