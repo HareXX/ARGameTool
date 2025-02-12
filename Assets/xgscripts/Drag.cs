@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Drag : MonoBehaviour
 {
-    private float detectionRadius = 0.025f; // ¼ì²â°ë¾¶
+    private float detectionRadius = 0.025f; // ï¿½ï¿½ï¿½ë¾¶
     Transform grabObject;
     Transform preParent;
     public void hold()
     {
 
-        Debug.Log("hold¿ªÊ¼Ö´ĞĞ");
+        Debug.Log("hold");
         if (grabObject != null) return;
-        // »ñÈ¡µ±Ç°ÎïÌåÖÜÎ§µÄËùÓĞÅö×²Æ÷
+        //
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
         if (hitColliders.Length == 0) return;
         foreach (Collider collider in hitColliders)
@@ -27,16 +27,21 @@ public class Drag : MonoBehaviour
                 preParent = collider.transform.parent;
                 collider.transform.parent = transform;
                 grabObject = collider.transform;
-                Debug.Log("×¥×¡");
+                Debug.Log("æŠ“åˆ°ç‰©ä½“äº†");
+                Debug.Log(gameObject.gameObject);
                 return;
             }
         }
-        Debug.Log("Ã»¶«Î÷¿É×¥");
+        Debug.Log("æˆåŠŸæŠ“ä½ç‰©ä½“");
     }
     public void release()
     {
-        if(grabObject!=null&&preParent!=null)
+        if(grabObject!=null && preParent!=null)
+        {
+            Debug.Log("é‡Šæ”¾ç‰©ä½“");
             Debug.Log(grabObject.name + "|" + preParent.name);
+        }
+            
         if (grabObject != null)
         {
             

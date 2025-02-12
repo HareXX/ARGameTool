@@ -63,7 +63,8 @@ public class InputManagerArFoundation : InputManagerBaseClass
 
         frameTexture = new Texture2D(MinRezValue, MaxRezValue, textureFormat, false);
         pixelColors = new Color32[MaxRezValue * MinRezValue];
-        inputRenderTexture = new RenderTexture(MinRezValue, MaxRezValue, 0);
+        int depth = 16;
+        inputRenderTexture = new RenderTexture(MinRezValue, MaxRezValue, depth);
 
         RenderTexture.active = inputRenderTexture;
         currentFrame = new ManoMotionFrame();
@@ -138,7 +139,8 @@ public class InputManagerArFoundation : InputManagerBaseClass
         {
             inputRenderTexture.Release();
         }
-        inputRenderTexture = new RenderTexture(width, height, 0);
+        int depth = 16;
+        inputRenderTexture = new RenderTexture(width, height, depth);
     }
 
     /// <summary>
