@@ -275,10 +275,25 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
-    
+
     //TODO 添加被肘的脚本
     public void addPunchInteraction()
     {
-        //
+        if (targetObject == null)
+        {
+            Debug.LogWarning("targetObject为null");
+            return;
+        }
+        // 检查目标对象是否已经有这个脚本
+        if (targetObject.GetComponent<Health>() == null)
+        {
+            // 如果没有，则添加脚本
+            targetObject.AddComponent<Health>();
+            Debug.Log("Health 已成功附加到 " + targetObject.name);
+        }
+        else
+        {
+            Debug.LogWarning(targetObject.name + " 已经有 Health 脚本了");
+        }
     }
 }

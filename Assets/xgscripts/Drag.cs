@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Drag : MonoBehaviour
 {
-    private float detectionRadius = 0.025f; // ���뾶
+    private float detectionRadius = 0.05f; // ���뾶
     Transform grabObject;
     Transform preParent;
     public void hold()
@@ -14,29 +14,37 @@ public class Drag : MonoBehaviour
         if (grabObject != null) return;
         //
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        if (hitColliders.Length == 0) return;
+        if (hitColliders.Length == 0 || hitColliders.Length == 1) return;
         foreach (Collider collider in hitColliders)
         {
-            Dragable flag = collider.GetComponent<Dragable>();
+            //过滤掉Sphere和ARPlane
+            if (collider.transform.gameObject.name != "Visuals") continue;
+            Debug.Log("collider.transform.gameObject: " + collider.transform.gameObject);
+            Debug.Log("collider.transform.parent: " + collider.transform.parent);
+
+            Dragable flag = collider.transform.parent.GetComponent<Dragable>();
             if (flag == null)
             {
                 continue;
             }
             else
             {
-                preParent = collider.transform.parent;
-                collider.transform.parent = transform;
-                grabObject = collider.transform;
-                Debug.Log("抓到物体了");
-                Debug.Log(gameObject.gameObject);
+                preParent = collider.transform.parent.parent;
+                collider.transform.parent.parent = transform;
+                grabObject = collider.transform.parent;
+                
+                Debug.Log("preParent: " + collider.transform.parent.parent);
+                Debug.Log("collider.transform: " + collider.transform.gameObject);
+                Debug.Log("grabObject: " + grabObject.gameObject);
+                
                 return;
             }
         }
-        Debug.Log("成功抓住物体");
+        Debug.Log("hold完成");
     }
     public void release()
     {
-        if(grabObject!=null && preParent!=null)
+        if(grabObject !=null )
         {
             Debug.Log("释放物体");
             Debug.Log(grabObject.name + "|" + preParent.name);
