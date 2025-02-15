@@ -284,6 +284,12 @@ public class AnimationManager : MonoBehaviour
             Debug.LogWarning("targetObject为null");
             return;
         }
+        targetObject=targetObject.transform.Find("Visuals").gameObject;
+        if (targetObject == null)
+        {
+            Debug.LogWarning("targetObject为null");
+            return;
+        }
         // 检查目标对象是否已经有这个脚本
         if (targetObject.GetComponent<Health>() == null)
         {
