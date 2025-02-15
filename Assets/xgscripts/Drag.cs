@@ -6,7 +6,12 @@ public class Drag : MonoBehaviour
 {
     private float detectionRadius = 0.05f; // ���뾶
     Transform grabObject;
+    public GameObject objectSpawner;
     Transform preParent;
+    public void Start()
+    {
+        preParent = objectSpawner.transform;
+    }
     public void hold()
     {
 
@@ -29,11 +34,10 @@ public class Drag : MonoBehaviour
             }
             else
             {
-                preParent = collider.transform.parent.parent;
                 collider.transform.parent.parent = transform;
                 grabObject = collider.transform.parent;
                 
-                Debug.Log("preParent: " + collider.transform.parent.parent);
+                //Debug.Log("preParent: " + collider.transform.parent.parent);
                 Debug.Log("collider.transform: " + collider.transform.gameObject);
                 Debug.Log("grabObject: " + grabObject.gameObject);
                 
@@ -47,7 +51,7 @@ public class Drag : MonoBehaviour
         if(grabObject !=null )
         {
             Debug.Log("释放物体");
-            Debug.Log(grabObject.name + "|" + preParent.name);
+            //Debug.Log(grabObject.name + "|" + preParent.name);
         }
             
         if (grabObject != null)

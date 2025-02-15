@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028353, g: 0.22571383, b: 0.30692253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -11781704, y: 100}
+  m_AnchoredPosition: {x: -11886769, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -11832,6 +11832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4d1f16d1a56fe4596b2241a4a07468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectSpawner: {fileID: 436358032}
 --- !u!135 &687943172
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -37399,7 +37400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4463729832540565992
 Transform:
   m_ObjectHideFlags: 0
