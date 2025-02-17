@@ -19,7 +19,7 @@ public class Drag : MonoBehaviour
         if (grabObject != null) return;
         //
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        if (hitColliders.Length == 0 || hitColliders.Length == 1) return;
+        if (hitColliders.Length < 2) return;
         foreach (Collider collider in hitColliders)
         {
             //过滤掉Sphere和ARPlane

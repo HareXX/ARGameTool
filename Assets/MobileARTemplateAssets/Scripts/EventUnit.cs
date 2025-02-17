@@ -34,6 +34,8 @@ public class EventUnit : MonoBehaviour
 
     public bool isEditing = false;
 
+    public bool triggerDetection = false;
+
     //当前物体是否在摄像机范围内
     public bool objectIncamera = false;
 
@@ -42,6 +44,8 @@ public class EventUnit : MonoBehaviour
     /// </summary>
 
     public List<GameObject> objectList = new List<GameObject>();
+
+    public GameObject triggerObject;
 
     public void setType(int type)
     {
@@ -143,7 +147,11 @@ public class EventUnit : MonoBehaviour
         else if (m_ObjectType == 2)
         {
             objectList.Add(AnimationManager.instance.targetObject);
-            if (AnimationManager.instance.targetTriggerObject != null) objectList.Add(AnimationManager.instance.targetTriggerObject);
+            if (AnimationManager.instance.targetTriggerObject != null)
+            {
+                triggerObject = AnimationManager.instance.targetTriggerObject;
+                AnimationManager.instance.addDragInteractionToTrigger();
+            }
             //TODO 禁止交互相关功能
             // 把关键词列表存下来, InteractionManger.getList()
         }
@@ -180,11 +188,7 @@ public class EventUnit : MonoBehaviour
         }
         else if (m_ObjectType == 2)
         {
-            if(voiceInteractionSentence == null)
-            {
-                return;
-            }
-            else
+            if(voiceInteractionSentence != null)
             {
                 EventLinkContentManager.Instance.objectDetection = true;
                 EventLinkContentManager.Instance.voiceUI.SetActive(true);
@@ -192,11 +196,12 @@ public class EventUnit : MonoBehaviour
                 //SpeechScript.Instance.inputText = voiceInteractionSentence;
                 
             }
-            if(gestureInteractionIndex == null)
+            else if(triggerObject != null)
             {
-                EditPage.instance.GestureInteractionCanvas.SetActive(true);
-
-                return;
+                Debug.Log("开始触发事件");
+                triggerObject.GetComponentInChildren<SphereCollider>().gameObject.SetActive(true);
+                GameObject targetObject = objectList[0];
+                triggerDetection = true;
             }
             
            
@@ -215,12 +220,37 @@ public class EventUnit : MonoBehaviour
 
     public void deleteEvent()
     {
-        int objectCnt = objectList.Count;
-        for (int i = objectCnt - 1; i >= 0; --i)
+        if (m_ObjectType == -1) return;
+        if (m_ObjectType == 0)
         {
-            Destroy(objectList[i]);
+            int objectCnt = objectList.Count;
+            for (int i = objectCnt - 1; i >= 0; --i)
+            {
+                Destroy(objectList[i]);
+            }
+            objectList.Clear();
+            return;
         }
-        objectList.Clear();
+        else if (m_ObjectType == 1)
+        {
+            int objectCnt = objectList.Count;
+            for (int i = objectCnt - 1; i >= 0; --i)
+            {
+                Destroy(objectList[i]);
+            }
+            objectList.Clear();
+            return;
+        }
+        else if (m_ObjectType == 2)
+        {
+            objectList.Clear();
+            triggerObject = null;
+        }
+        else if (m_ObjectType == 3)
+        {
+            objectList.Clear();
+        }
+        
     }
 
     // Start is called before the first frame update
@@ -231,4 +261,5 @@ public class EventUnit : MonoBehaviour
 
     // Update is called once per frame
     
+
 }

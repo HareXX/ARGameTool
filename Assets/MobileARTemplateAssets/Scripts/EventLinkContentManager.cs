@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
@@ -55,6 +54,8 @@ public class EventLinkContentManager : MonoBehaviour
     public GameObject voiceUI;
 
     public bool objectDetection = false;
+
+    public bool isPlaying = false;
 
     //public GameObject interactionManager;
     //UI
@@ -306,6 +307,7 @@ public class EventLinkContentManager : MonoBehaviour
 
     public void playEvent()
     {
+        isPlaying = true;
         focusedEventIndex = 0;
         eventLink.play(focusedEventIndex);
 
@@ -317,5 +319,10 @@ public class EventLinkContentManager : MonoBehaviour
         objectDetection = false;
         nextEvent();
     }
-    
+
+    public void Update()
+    {
+        
+    }
+
 }

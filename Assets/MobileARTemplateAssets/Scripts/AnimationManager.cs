@@ -222,6 +222,8 @@ public class AnimationManager : MonoBehaviour
         }
         // 在选择物体状态下，参考ARTemplateManager，如果选中物体，则出现确定按钮
         //
+        
+        
     }
 
     public void playAnimation(GameObject gameObject, int animationType)
@@ -275,6 +277,25 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
+    public void addDragInteractionToTrigger()
+    {
+        if (targetTriggerObject == null)
+        {
+            Debug.LogWarning("targetObject为null");
+            return;
+        }
+        // 检查目标对象是否已经有这个脚本
+        if (targetTriggerObject.GetComponent<Dragable>() == null)
+        {
+            // 如果没有，则添加脚本
+            targetTriggerObject.AddComponent<Dragable>();
+            Debug.Log("Dragable 已成功附加到 " + targetTriggerObject.name);
+        }
+        else
+        {
+            Debug.LogWarning(targetTriggerObject.name + " 已经有 Dragable 脚本了");
+        }
+    }
 
     //TODO 添加被肘的脚本
     public void addPunchInteraction()
@@ -302,4 +323,5 @@ public class AnimationManager : MonoBehaviour
             Debug.LogWarning(targetObject.name + " 已经有 Health 脚本了");
         }
     }
+
 }

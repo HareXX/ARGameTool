@@ -11,7 +11,7 @@ PlayerSettings:
   defaultScreenOrientation: 0
   targetDevice: 0
   useOnDemandResources: 0
-  accelerometerFrequency: 60
+  accelerometerFrequency: 30
   companyName: Hare
   productName: EscapeRoom
   defaultCursor: {fileID: 0}
