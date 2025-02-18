@@ -384,6 +384,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7396278978564332023, guid: eb9104ef66b7305468adb3697fdeed5e,
+        type: 3}
+      propertyPath: m_Renderer
+      value: 
+      objectReference: {fileID: 6433863013630822723}
     - target: {fileID: 8634317094661461186, guid: eb9104ef66b7305468adb3697fdeed5e,
         type: 3}
       propertyPath: m_IgnoreSelectEvents
@@ -421,7 +426,12 @@ PrefabInstance:
     - target: {fileID: 7003830714791541051, guid: f294c023be8121c4797b07030a53d5de,
         type: 3}
       propertyPath: m_Name
-      value: mossy_rocks_low_poly
+      value: Visuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248927811622482800, guid: f294c023be8121c4797b07030a53d5de,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7248927811622482800, guid: f294c023be8121c4797b07030a53d5de,
         type: 3}
@@ -516,3 +526,9 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3382409283333923501, guid: 0a899e68487b26641a221c73c7d2cd30, type: 3}
+--- !u!23 &6433863013630822723 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 558274749416555800, guid: f294c023be8121c4797b07030a53d5de,
+    type: 3}
+  m_PrefabInstance: {fileID: 6842885105681566811}
+  m_PrefabAsset: {fileID: 0}

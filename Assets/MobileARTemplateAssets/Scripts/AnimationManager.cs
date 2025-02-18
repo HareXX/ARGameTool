@@ -254,7 +254,24 @@ public class AnimationManager : MonoBehaviour
             //gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 2.5f);
 
         }
+        else if (animationType == 4)
+        {
+            Debug.Log("播放消失动画");
+            StartCoroutine(Vanish(gameObject));
+            //gameObject.transform.Find("Visuals").gameObject.SetActive(false);
+            //if (EventLinkContentManager.Instance.isPlaying == false) gameObject.transform.Find("Visuals").gameObject.SetActive(true);
+        }
+
     }
+
+    
+    IEnumerator Vanish(GameObject gameObject)
+    {
+        yield return new WaitForSeconds(10f);
+        gameObject.SetActive(false);
+        if (EventLinkContentManager.Instance.isPlaying == false) gameObject.SetActive(true);
+    }
+
 
     // 这个方法将给定的脚本附加到指定的对象上
     public void addDragInteraction()

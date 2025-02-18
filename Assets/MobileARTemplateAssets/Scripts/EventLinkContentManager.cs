@@ -173,7 +173,7 @@ public class EventLinkContentManager : MonoBehaviour
         if (type == 0)
         {
             TextMeshProUGUI text = newEvent.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();   //设置按钮内容
-            text.SetText("Object");
+            text.SetText("物体");
 
             eventLink.addEvent(0);  // type 0 是物体
             //TODO 这里未将对话框和物体区分，统一是0
@@ -181,14 +181,14 @@ public class EventLinkContentManager : MonoBehaviour
         else if (type == 1)
         {
             TextMeshProUGUI text = newEvent.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();   //设置按钮内容
-            text.SetText("Interaction");
+            text.SetText("交互");
 
             eventLink.addEvent(2);  // type 2 是交互
         }
         else if (type == 2)
         {
             TextMeshProUGUI text = newEvent.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();   //设置按钮内容
-            text.SetText("Animation");
+            text.SetText("动画");
 
             eventLink.addEvent(3);  // type 3 是动画
         }
@@ -278,7 +278,7 @@ public class EventLinkContentManager : MonoBehaviour
         else if (eventType == 2)
         {
             eventLink.saveEvent(focusedEventIndex, null);
-            animationManager.SetActive(false);
+            //animationManager.SetActive(false);
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Interaction)").gameObject.SetActive(false);
             //todo 播放交互
@@ -287,7 +287,7 @@ public class EventLinkContentManager : MonoBehaviour
         else if (eventType == 3)
         {
             eventLink.saveEvent(focusedEventIndex, null);
-            animationManager.SetActive(false);
+            //animationManager.SetActive(false);
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(false);
             Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
@@ -300,7 +300,11 @@ public class EventLinkContentManager : MonoBehaviour
     public void nextEvent()
     {
         ++focusedEventIndex;
-        if (focusedEventIndex == eventCount) return;
+        if (focusedEventIndex >= eventCount)
+        {
+            
+            return;
+        }
         eventLink.play(focusedEventIndex);
     }
 

@@ -185,6 +185,7 @@ public class EventUnit : MonoBehaviour
                 disableIntereaction(element);
                 element.transform.Find("Content Affordance").gameObject.SendMessage("play");
             }
+            EventLinkContentManager.Instance.nextEvent();
         }
         else if (m_ObjectType == 2)
         {
@@ -209,7 +210,7 @@ public class EventUnit : MonoBehaviour
         else if (m_ObjectType == 3)
         {
             AnimationManager.instance.playAnimation(objectList[0], animationType);
-            
+            if (EventLinkContentManager.Instance.isPlaying) EventLinkContentManager.Instance.nextEvent();
         }
     }
 

@@ -14,9 +14,10 @@ public class TriggerDetection : MonoBehaviour
     void Update()
     {
         if (EventLinkContentManager.Instance == null) return;
-        if (EventLinkContentManager.Instance.isPlaying)
+        if (EventLinkContentManager.Instance.isPlaying && EventLinkContentManager.Instance.eventCount > 0 &&
+            EventLinkContentManager.Instance.focusedEventIndex < EventLinkContentManager.Instance.eventCount)
         {
-
+            
             EventUnit eventUnit = EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex];
 
             if (eventUnit.triggerDetection == false) return;
