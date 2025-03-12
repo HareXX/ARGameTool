@@ -38,7 +38,7 @@ public class HandPoint : MonoBehaviour
             }
         }
 
-        if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.CLICK)
+        if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.PICK)
         {
             Debug.Log("click");
             visibleBall.GetComponent<Drag>().hold();

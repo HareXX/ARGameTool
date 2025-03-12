@@ -21,13 +21,13 @@ public class TriggerDetection : MonoBehaviour
             EventUnit eventUnit = EventLinkContentManager.Instance.eventLink.link[EventLinkContentManager.Instance.focusedEventIndex];
 
             if (eventUnit.triggerDetection == false) return;
-            Debug.Log("true!!!!!!!!!!!!!!!");
+            //Debug.Log("true!!!!!!!!!!!!!!!");
 
             Collider[] hitColliders = Physics.OverlapSphere(eventUnit.triggerObject.transform.position, 0.05f);
             foreach (Collider collider in hitColliders)
             {
                 //过滤掉Sphere和ARPlane
-                Debug.Log("collider: " + collider);
+                //Debug.Log("collider: " + collider);
                 if (collider.transform.gameObject.name != "Visuals") continue;
 
                 Debug.Log("object: " + eventUnit.objectList[0]);
