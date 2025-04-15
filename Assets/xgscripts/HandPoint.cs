@@ -18,18 +18,9 @@ public class HandPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("ManoMotionManager");
-        //Debug.Log(ManoMotionManager.Instance);
-        //Debug.Log(ManoMotionManager.Instance.HandInfos);
-        //if (ManoMotionManager.Instance.HandInfos[0] == HandInfo) return;
-        HandInfo handInfo = ManoMotionManager.Instance.HandInfos[0];
-        //Debug.Log("handInfo: ");
-        //Debug.Log(handInfo);
-
-        //HandInfo handInfo = HandSide.None;
-        if (handInfo.gestureInfo.manoClass != ManoClass.NO_HAND)
-            Debug.Log(handInfo.gestureInfo.manoClass);
-
+        HandInfo handInfo = ManoMotionManager.Instance.HandInfos[1];
+        
+        
         if (handInfo.gestureInfo.handSide == HandSide.None)
         {
 
@@ -48,29 +39,28 @@ public class HandPoint : MonoBehaviour
             }
         }
 
-        //if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.PICK)
-        //{
-        //    Debug.Log("click");
-        //    visibleBall.GetComponent<Drag>().hold();
-        //}
-        //else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
-        //{
-        //    Debug.Log("Point");
+        if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.PICK)
+        {
+            Debug.Log("click");
+            visibleBall.GetComponent<Drag>().hold();
+        }
+        else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
+        {
+            Debug.Log("Point");
+        }
+        else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.DROP)
+        {
+            Debug.Log("drop");
+            visibleBall.GetComponent<Drag>().release();
+            //visibleBall.GetComponent<Point>().release();
+        }
 
-        //}
-        //else
-        //{
-        //    Debug.Log("drop");
-        //    visibleBall.GetComponent<Drag>().release();
-        //    visibleBall.GetComponent<Point>().release();
-        //}
-
-        //Vector3 dir = Camera.main.ViewportPointToRay(handInfo.trackingInfo.skeleton.jointPositions[0]).direction;
-        //Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.trackingInfo.skeleton.jointPositions[0]);
-        //Vector3 newPosition = palmCenterPos + handInfo.trackingInfo.depthEstimation * dir * 0.5f;
+        Vector3 dir = Camera.main.ViewportPointToRay(handInfo.trackingInfo.skeleton.jointPositions[0]).direction;
+        Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.trackingInfo.skeleton.jointPositions[0]);
+        Vector3 newPosition = palmCenterPos + handInfo.trackingInfo.depthEstimation * dir * 0.5f;
         //// ʹ��Lerp��ƽ�����ɵ��µ�Ŀ��λ��
         ////targetPosition = Vector3.Lerp(targetPosition, newPosition, smoothSpeed * Time.deltaTime);
         //// ���������λ��
-        //visibleBall.transform.position = newPosition;
+        visibleBall.transform.position = newPosition;
     }
 }
