@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using ManoMotion;
 
 public class HandPoint : MonoBehaviour
 {
@@ -18,9 +18,19 @@ public class HandPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandInfo handInfo = ManomotionManager.Instance.Hand_infos[0].hand_info;
+        //Debug.Log("ManoMotionManager");
+        //Debug.Log(ManoMotionManager.Instance);
+        //Debug.Log(ManoMotionManager.Instance.HandInfos);
+        //if (ManoMotionManager.Instance.HandInfos[0] == HandInfo) return;
+        HandInfo handInfo = ManoMotionManager.Instance.HandInfos[0];
+        //Debug.Log("handInfo: ");
+        //Debug.Log(handInfo);
 
-        if (handInfo.gesture_info.hand_side == HandSide.None)
+        //HandInfo handInfo = HandSide.None;
+        if (handInfo.gestureInfo.manoClass != ManoClass.NO_HAND)
+            Debug.Log(handInfo.gestureInfo.manoClass);
+
+        if (handInfo.gestureInfo.handSide == HandSide.None)
         {
 
             if (visibleBall.activeSelf)
@@ -38,21 +48,29 @@ public class HandPoint : MonoBehaviour
             }
         }
 
-        if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.PICK)
-        {
-            Debug.Log("click");
-            visibleBall.GetComponent<Drag>().hold();
-        }else if(handInfo.gesture_info.mano_gesture_trigger == ManoGestureTrigger.DROP)
-        {
-            Debug.Log("drop");
-            visibleBall.GetComponent<Drag>().release();
-        }
-        Vector3 dir = Camera.main.ViewportPointToRay(handInfo.tracking_info.palm_center).direction;
-        Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.tracking_info.palm_center);
-        Vector3 newPosition= palmCenterPos + handInfo.tracking_info.depth_estimation* dir *0.5f;
-        // ʹ��Lerp��ƽ�����ɵ��µ�Ŀ��λ��
-        //targetPosition = Vector3.Lerp(targetPosition, newPosition, smoothSpeed * Time.deltaTime);
-        // ���������λ��
-        visibleBall.transform.position = newPosition;
+        //if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.PICK)
+        //{
+        //    Debug.Log("click");
+        //    visibleBall.GetComponent<Drag>().hold();
+        //}
+        //else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
+        //{
+        //    Debug.Log("Point");
+
+        //}
+        //else
+        //{
+        //    Debug.Log("drop");
+        //    visibleBall.GetComponent<Drag>().release();
+        //    visibleBall.GetComponent<Point>().release();
+        //}
+
+        //Vector3 dir = Camera.main.ViewportPointToRay(handInfo.trackingInfo.skeleton.jointPositions[0]).direction;
+        //Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.trackingInfo.skeleton.jointPositions[0]);
+        //Vector3 newPosition = palmCenterPos + handInfo.trackingInfo.depthEstimation * dir * 0.5f;
+        //// ʹ��Lerp��ƽ�����ɵ��µ�Ŀ��λ��
+        ////targetPosition = Vector3.Lerp(targetPosition, newPosition, smoothSpeed * Time.deltaTime);
+        //// ���������λ��
+        //visibleBall.transform.position = newPosition;
     }
 }

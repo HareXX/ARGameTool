@@ -549,7 +549,9 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: AR Camera
+  cameraUsageDescription: This application requires camera permission in order to
+    detect a hand when you place it in front of the camera and understand the gesture
+    interaction.
   locationUsageDescription: 
   microphoneUsageDescription: use microphone
   bluetoothUsageDescription: 
