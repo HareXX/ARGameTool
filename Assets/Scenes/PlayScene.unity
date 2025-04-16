@@ -310,7 +310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -13540470, y: 100}
+  m_AnchoredPosition: {x: -13608255, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &25574409
@@ -3794,12 +3794,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8718670922536263267, guid: d329948d72609b64aa2c74f06f1a9a22,
         type: 3}
+      propertyPath: targetFps
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718670922536263267, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
       propertyPath: processingType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8718670922536263267, guid: d329948d72609b64aa2c74f06f1a9a22,
         type: 3}
       propertyPath: overrideLicense
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718670922536263267, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
+      propertyPath: manomotionSession.enabledFeatures.fastMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718670922536263267, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
+      propertyPath: manomotionSession.enabledFeatures.skeleton3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749111374757785978, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
+      propertyPath: shouldShowSkeleton
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749111374757785978, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
+      propertyPath: useSkeletonSmoothing
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8749738011431995990, guid: d329948d72609b64aa2c74f06f1a9a22,
@@ -3922,6 +3947,11 @@ PrefabInstance:
       propertyPath: arCameraManager
       value: 
       objectReference: {fileID: 1553500812}
+    - target: {fileID: 8824635107941877501, guid: d329948d72609b64aa2c74f06f1a9a22,
+        type: 3}
+      propertyPath: splittingFactor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8824635107941877501, guid: d329948d72609b64aa2c74f06f1a9a22,
         type: 3}
       propertyPath: arCameraBackground
@@ -11772,7 +11802,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0005, y: 0.0005, z: 0.0005}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

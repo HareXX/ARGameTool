@@ -28,6 +28,7 @@ public class HandPoint : MonoBehaviour
             {
                 visibleBall.SetActive(false);
                 visibleBall.GetComponent<Drag>().release();
+                
             }
             return;
         }
@@ -36,6 +37,7 @@ public class HandPoint : MonoBehaviour
             if (!visibleBall.activeSelf)
             {
                 visibleBall.SetActive(true);
+                Debug.Log("球出现了");
             }
         }
 
@@ -47,6 +49,7 @@ public class HandPoint : MonoBehaviour
         else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
         {
             Debug.Log("Point");
+            visibleBall.GetComponent<Drag>().hold();
         }
         else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.DROP)
         {
@@ -55,9 +58,15 @@ public class HandPoint : MonoBehaviour
             //visibleBall.GetComponent<Point>().release();
         }
 
-        Vector3 dir = Camera.main.ViewportPointToRay(handInfo.trackingInfo.skeleton.jointPositions[0]).direction;
-        Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.trackingInfo.skeleton.jointPositions[0]);
-        Vector3 newPosition = palmCenterPos + handInfo.trackingInfo.depthEstimation * dir * 0.5f;
+        //Debug.Log(handInfo.trackingInfo.skeleton.jointPositions[0]);
+
+        Vector3 dir = Camera.main.ViewportPointToRay(handInfo.trackingInfo.skeleton.jointPositions[8]).direction;
+        Vector3 palmCenterPos = Camera.main.ViewportToWorldPoint(handInfo.trackingInfo.skeleton.jointPositions[8]);
+        Vector3 newPosition = palmCenterPos + handInfo.trackingInfo.depthEstimation * dir * 0.3f;
+
+        //Debug.Log("-----------------------------------------------");
+        //Debug.Log(handInfo.trackingInfo.skeleton.jointPositions[8]);
+        //Debug.Log(newPosition);
         //// ʹ��Lerp��ƽ�����ɵ��µ�Ŀ��λ��
         ////targetPosition = Vector3.Lerp(targetPosition, newPosition, smoothSpeed * Time.deltaTime);
         //// ���������λ��
