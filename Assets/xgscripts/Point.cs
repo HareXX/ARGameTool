@@ -6,7 +6,7 @@ public class Point : MonoBehaviour
 {
     private float detectionRadius = 0.05f; // 
     Transform pointObject;
-    public GameObject objectSpawner;
+    //public GameObject objectSpawner;
     Transform preParent;
     public void Start()
     {
@@ -15,7 +15,7 @@ public class Point : MonoBehaviour
     public void point()
     {
 
-        Debug.Log("point");
+        //Debug.Log("point");s
         if (pointObject != null) return;
         //
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
@@ -23,21 +23,18 @@ public class Point : MonoBehaviour
         foreach (Collider collider in hitColliders)
         {
             //过滤掉Sphere和ARPlane
-            if (collider.transform.gameObject.name != "Visuals") continue;
+            if (collider.transform.gameObject.tag != "numKey") continue;
             Debug.Log("collider.transform.gameObject: " + collider.transform.gameObject);
-            Debug.Log("collider.transform.parent: " + collider.transform.parent);
+            Debug.Log("collider.transform.parent: " + collider.transform.parent.gameObject);
 
-            
-            
-            pointObject = collider.transform;
-            //Debug.Log("preParent: " + collider.transform.parent.parent);
-            Debug.Log("collider.transform: " + collider.transform.gameObject);
-            Debug.Log("pointObject: " + pointObject.gameObject);
+            GameObject key = collider.transform.gameObject;
+            key.GetComponent<NumKey>().Invoke("press",0);
+
 
             return;
             
         }
-        Debug.Log("hold完成");
+        //Debug.Log("point完成");
     }
     public void release()
     {

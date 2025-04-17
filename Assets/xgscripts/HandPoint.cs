@@ -37,7 +37,7 @@ public class HandPoint : MonoBehaviour
             if (!visibleBall.activeSelf)
             {
                 visibleBall.SetActive(true);
-                Debug.Log("球出现了");
+                //Debug.Log("球出现了");
             }
         }
 
@@ -48,8 +48,8 @@ public class HandPoint : MonoBehaviour
         }
         else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
         {
-            Debug.Log("Point");
-            visibleBall.GetComponent<Drag>().hold();
+            //Debug.Log("Point");
+            visibleBall.GetComponent<Point>().point();
         }
         else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.DROP)
         {
