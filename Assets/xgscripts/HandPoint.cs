@@ -40,10 +40,10 @@ public class HandPoint : MonoBehaviour
                 //Debug.Log("球出现了");
             }
         }
-
+        
         if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.PICK)
         {
-            Debug.Log("click");
+            Debug.Log(handInfo.gestureInfo.manoGestureTrigger);
             visibleBall.GetComponent<Drag>().hold();
         }
         else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.POINTER_GESTURE)
@@ -51,12 +51,18 @@ public class HandPoint : MonoBehaviour
             //Debug.Log("Point");
             visibleBall.GetComponent<Point>().point();
         }
+        else if (handInfo.gestureInfo.manoGestureContinuous == ManoGestureContinuous.OPEN_HAND_GESTURE)
+        {
+            //Debug.Log("5555555");
+            visibleBall.GetComponent<Pat>().pat();
+        }
         else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.DROP)
         {
             Debug.Log("drop");
             visibleBall.GetComponent<Drag>().release();
             //visibleBall.GetComponent<Point>().release();
         }
+        
 
         //Debug.Log(handInfo.trackingInfo.skeleton.jointPositions[0]);
 

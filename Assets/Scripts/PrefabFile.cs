@@ -24,6 +24,12 @@ public class PrefabFile : MonoBehaviour
             SceneManager.instance.gameObject.SetActive(true);
             SceneManager.instance.currentScene = index;
             EditPage.instance.GetComponent<Canvas>().enabled = false;
+
+            GameObject[] Visuals = GameObject.FindGameObjectsWithTag("Arrow");
+            foreach (GameObject visual in Visuals)
+            {
+                visual.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+            }
         }
         else
         {
@@ -38,9 +44,19 @@ public class PrefabFile : MonoBehaviour
             {
                 go.SetActive(false);
             }
+
+            GameObject[] Visuals = GameObject.FindGameObjectsWithTag("Arrow");
+            foreach (GameObject visual in Visuals)
+            {
+                visual.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+            }
+
             EditPage.instance.PlaymodeManager.SetActive(true);
             PlaymodeManager.instance.PlayObjects = gameObjects;
             EventLinkContentManager.Instance.playEvent();   //播放事件
+
+
+
             //EditPage.instance.ButtonContinue.SetActive(true);
         }
 

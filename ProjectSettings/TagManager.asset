@@ -8,6 +8,7 @@ TagManager:
   - Dialog
   - baseSDK
   - numKey
+  - Arrow
   layers:
   - Default
   - TransparentFX

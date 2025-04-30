@@ -314,8 +314,8 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
-    //TODO 添加被肘的脚本
-    public void addPunchInteraction()
+    // 添加point的脚本
+    public void addPatInteraction()
     {
         if (targetObject == null)
         {
@@ -329,11 +329,11 @@ public class AnimationManager : MonoBehaviour
             return;
         }
         // 检查目标对象是否已经有这个脚本
-        if (targetObject.GetComponent<Health>() == null)
+        if (targetObject.GetComponent<Patable>() == null)
         {
             // 如果没有，则添加脚本
-            targetObject.AddComponent<Health>();
-            Debug.Log("Health 已成功附加到 " + targetObject.name);
+            targetObject.AddComponent<Patable>();
+            Debug.Log("Patable 已成功附加到 " + targetObject.name);
         }
         else
         {
