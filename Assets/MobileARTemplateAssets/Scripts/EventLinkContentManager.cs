@@ -281,6 +281,7 @@ public class EventLinkContentManager : MonoBehaviour
             //animationManager.SetActive(false);
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Interaction)").gameObject.SetActive(false);
+            ClearFocusObject();
             //todo 播放交互
             //TODO 隐藏隐藏交互相关UI
         }
@@ -290,6 +291,7 @@ public class EventLinkContentManager : MonoBehaviour
             //animationManager.SetActive(false);
             animationManager.transform.Find("Button (Choose Object)").gameObject.SetActive(false);
             animationManager.transform.Find("Button (Choose Animation)").gameObject.SetActive(false);
+            ClearFocusObject();
             Debug.Log(eventLink.link[focusedEventIndex].objectList[0]);
         
             Debug.Log(eventLink.link[focusedEventIndex].animationType);
